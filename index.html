@@ -15,6 +15,7 @@
     #status { margin-top: 1rem; font-weight: bold; }
     .mode-section { display: none; margin-top: 1rem; }
     #resetBtn { background-color: #eee; margin-bottom: 1rem; }
+    #cancelScanBtn { display: none; background-color: #fdd; margin-top: 0.5rem; }
     #assetNavInfo {
       display: flex;
       justify-content: space-between;
@@ -24,6 +25,7 @@
   </style>
 </head>
 <body>
+
   <button id="resetBtn" type="button">🔄 Reset NFC Session</button>
 
   <h2>NFC Tag Writer</h2>
@@ -79,6 +81,7 @@
         <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
       </div>
       <button id="writeBatch">Write Tag for Current Asset</button>
+      <button id="cancelScanBtn" type="button">❌ Cancel Scan</button>
       <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
         <button id="prevAsset">⬅️ Previous</button>
         <button id="nextAsset">Next ➡️</button>
@@ -95,12 +98,21 @@
     const batchMode = document.getElementById("batchMode");
     const successSound = document.getElementById("successSound");
     const status = document.getElementById("status");
+    const cancelScanBtn = document.getElementById("cancelScanBtn");
 
     const companySelectSingle = document.getElementById("companySelectSingle");
     const companySelectBatch = document.getElementById("companySelectBatch");
     const nextAssetBtn = document.getElementById("nextAsset");
     const prevAssetBtn = document.getElementById("prevAsset");
+
     let failCount = 0;
+    let isScanCanceled = false;
+
+    cancelScanBtn.addEventListener("click", () => {
+      isScanCanceled = true;
+      cancelScanBtn.style.display = "none";
+      status.textContent = "❌ Scan canceled. You can safely move to another asset.";
+    });
 
     companySelectSingle.addEventListener("change", () => {
       const val = companySelectSingle.value;
@@ -128,6 +140,9 @@
     }, { once: true });
 
     async function safeWrite(url, scanBtn) {
+      isScanCanceled = false;
+      cancelScanBtn.style.display = "inline-block";
+
       scanBtn.disabled = true;
       nextAssetBtn.disabled = true;
       prevAssetBtn.disabled = true;
@@ -135,9 +150,13 @@
       await new Promise(resolve => setTimeout(resolve, 250));
 
       try {
+        if (isScanCanceled) return false;
+
         const ndef = new NDEFReader();
-        await ndef.scan(); // Optional stabilization
+        await ndef.scan();
         await new Promise(resolve => setTimeout(resolve, 250));
+        if (isScanCanceled) return false;
+
         await ndef.write({ records: [{ recordType: "url", data: url }] });
 
         await new Promise(r => setTimeout(r, 500));
@@ -162,6 +181,7 @@
 
         return false;
       } finally {
+        cancelScanBtn.style.display = "none";
         scanBtn.disabled = false;
         nextAssetBtn.disabled = false;
         prevAssetBtn.disabled = false;
