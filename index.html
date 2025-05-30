@@ -132,10 +132,6 @@
 
     document.getElementById("resetBtn").addEventListener("click", () => location.reload());
 
-    document.addEventListener("click", () => {
-      if (successSound.paused) successSound.play().then(() => successSound.pause()).catch(() => {});
-    }, { once: true });
-
     cancelScanBtn.addEventListener("click", () => {
       if (abortController) {
         abortController.abort();
@@ -162,7 +158,9 @@
 
       try {
         const ndef = new NDEFReader();
-        await ndef.write({ records: [{ recordType: "url", data: url }] }, { signal });
+        await ndef.scan({ signal });
+        await new Promise(resolve => setTimeout(resolve, 250));
+        await ndef.write({ records: [{ recordType: "url", data: url }] });
         await new Promise(r => setTimeout(r, 500));
         successSound.play();
         failCount = 0;
