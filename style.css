@@ -33,6 +33,20 @@ input, button, textarea, select {
   font-size: 1rem;
 }
 
+.reset-button {
+  font-size: 0.85rem;
+  background-color: transparent;
+  color: var(--brand-secondary-color);
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+
+.reset-button:hover {
+  color: var(--brand-text-color);
+  text-decoration: underline;
+}
+
 /* 🔶 Write buttons now use brand orange */
 button.write-button {
   background-color: var(--brand-primary-color);
