@@ -148,12 +148,13 @@
     }, { once: true });
 
     async function safeWrite(url, scanBtn) {
-      cancelScanBtn.style.display = "inline-block";
+      // ✅ Fix: always reset cancel flag before every write
       isScanCanceled = false;
+      cancelScanBtn.style.display = "inline-block";
 
       scanBtn.disabled = true;
-      nextAssetBtn.disabled = true;
-      prevAssetBtn.disabled = true;
+      document.getElementById("nextAsset").disabled = true;
+      document.getElementById("prevAsset").disabled = true;
       scanBtn.textContent = "Scanning...";
       await new Promise(resolve => setTimeout(resolve, 250));
 
@@ -161,36 +162,22 @@
         const ndef = new NDEFReader();
         await ndef.scan();
         await new Promise(resolve => setTimeout(resolve, 250));
+        
+        // ✅ Cancel scan check — if triggered, exit early
         if (isScanCanceled) return false;
 
         await ndef.write({ records: [{ recordType: "url", data: url }] });
         await new Promise(r => setTimeout(r, 500));
-
-        successSound.play();
-        failCount = 0;
+        document.getElementById("successSound").play();
         return true;
       } catch (err) {
-        console.error("Write failed:", err);
-        failCount++;
-
-        if (err.name === "NotAllowedError") {
-          status.textContent = "❌ NFC permission denied. Unlock phone or re-tap tag.";
-        } else if (err.name === "AbortError") {
-          status.textContent = "❌ Tag scan aborted. Try again.";
-        } else {
-          status.textContent = `❌ Write failed: ${err.message}`;
-        }
-
-        if (failCount >= 2) {
-          status.textContent += " ⚠️ Multiple failures — try toggling NFC or restarting Chrome.";
-        }
-
+        document.getElementById("status").textContent = `❌ ${err.message}`;
         return false;
       } finally {
         cancelScanBtn.style.display = "none";
         scanBtn.disabled = false;
-        nextAssetBtn.disabled = false;
-        prevAssetBtn.disabled = false;
+        document.getElementById("nextAsset").disabled = false;
+        document.getElementById("prevAsset").disabled = false;
         scanBtn.textContent = scanBtn.dataset.originalText;
       }
     }
