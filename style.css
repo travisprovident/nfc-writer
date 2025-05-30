@@ -1,4 +1,3 @@
-
 :root {
   --brand-background-color: white;
   --brand-text-color: #333333;
@@ -26,26 +25,23 @@ body {
   color: var(--brand-text-color);
 }
 
-/* 🔧 Consistent spacing and alignment */
+/* 🔧 Spacing for label + input consistency */
 .form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin-bottom: 1.25rem;
 }
 
-.form-group label {
-  align-self: flex-start;
+label {
   margin-bottom: 0.3rem;
+  display: block;
   font-weight: 500;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+input,
+select,
+textarea,
+button {
+  display: block;
   width: 100%;
-  max-width: 400px;
-  box-sizing: border-box;
   padding: 0.5rem;
   font-size: 1rem;
   margin-bottom: 0;
