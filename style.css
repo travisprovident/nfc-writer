@@ -25,23 +25,26 @@ body {
   color: var(--brand-text-color);
 }
 
-/* 🔧 Spacing for label + input consistency */
+/* 🔧 Consistent spacing and alignment */
 .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 1.25rem;
 }
 
-label {
+.form-group label {
+  align-self: flex-start;
   margin-bottom: 0.3rem;
-  display: block;
   font-weight: 500;
 }
 
-input,
-select,
-textarea,
-button {
-  display: block;
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
   padding: 0.5rem;
   font-size: 1rem;
   margin-bottom: 0;
