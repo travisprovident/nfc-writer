@@ -4,7 +4,7 @@
   <title>NFC Write</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: sans-serif; padding: 2rem; }
+    body { font-family: sans-serif; padding: 2rem; max-width: 500px; margin: auto; }
     input, button { margin-top: 0.5rem; display: block; width: 100%; padding: 0.5rem; font-size: 1rem; }
     #status { margin-top: 1rem; font-weight: bold; }
   </style>
@@ -39,11 +39,9 @@
       const fullUrl = `${base}${id}`;
 
       try {
-        const ndef = new NDEFReader();
+        const ndef = new NDEFReader(); // ✅ CORRECT class
         status.textContent = "📡 Scanning… touch a tag to write.";
-        await ndef.write({
-          records: [{ recordType: "url", data: fullUrl }]
-        });
+        await ndef.write({ records: [{ recordType: "url", data: fullUrl }] });
 
         document.getElementById("successSound").play();
         status.textContent = `✅ Tag written successfully: ${fullUrl}`;
@@ -54,9 +52,6 @@
       }
     });
   </script>
-
-</body>
-</html>
 
 </body>
 </html>
