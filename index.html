@@ -148,8 +148,8 @@
     }, { once: true });
 
     async function safeWrite(url, scanBtn) {
-      isScanCanceled = false;
       cancelScanBtn.style.display = "inline-block";
+      isScanCanceled = false;
 
       scanBtn.disabled = true;
       nextAssetBtn.disabled = true;
