@@ -25,22 +25,23 @@ body {
   color: var(--brand-text-color);
 }
 
-/* Form structure and layout */
+/* Grouping for input + label */
 .form-group {
   margin-bottom: 1.25rem;
-  text-align: center;
 }
 
+/* Label styling (left-aligned) */
 .form-group label {
   display: block;
   font-weight: 500;
   margin-bottom: 0.3rem;
+  text-align: left;
 }
 
-/* Inputs, selects, textareas styled uniformly */
-.form-control,
-button.write-button,
-.cancel-scan {
+/* Inputs and selects */
+input,
+select,
+textarea {
   display: block;
   width: 100%;
   max-width: 400px;
@@ -50,19 +51,38 @@ button.write-button,
   box-sizing: border-box;
 }
 
-/* Write button branding */
+/* Write buttons */
 button.write-button {
   background-color: var(--brand-primary-color);
   color: var(--brand-background-color);
   font-weight: bold;
   border: none;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 0.5rem;
+  display: block;
+  font-size: 1rem;
 }
 
 button.write-button:hover {
   background-color: var(--brand-primary-hover);
 }
 
-/* Reset button at bottom */
+/* Cancel scan button */
+.cancel-scan {
+  display: none;
+  background-color: #fdd;
+  color: black;
+  font-weight: bold;
+  width: 100%;
+  max-width: 400px;
+  margin: 0.5rem auto 0;
+  padding: 0.5rem;
+  display: block;
+}
+
+/* Reset button bottom right */
 .reset-button {
   font-size: 0.85rem;
   background-color: transparent;
@@ -70,6 +90,8 @@ button.write-button:hover {
   border: none;
   cursor: pointer;
   padding: 0.25rem 0.5rem;
+  float: right;
+  margin-top: 2rem;
 }
 
 .reset-button:hover {
@@ -77,29 +99,20 @@ button.write-button:hover {
   text-decoration: underline;
 }
 
-/* Cancel scan styling */
-.cancel-scan {
-  display: none;
-  background-color: #fdd;
-  color: black;
-  font-weight: bold;
-  margin-top: 0.5rem;
-}
-
-/* Status message styling */
+/* Status message */
 #status {
   margin-top: 1rem;
   font-weight: bold;
   text-align: center;
 }
 
-/* Hide mode sections by default */
+/* Mode section visibility */
 .mode-section {
   display: none;
   margin-top: 1rem;
 }
 
-/* Logo at top */
+/* Logo styling */
 #logoContainer {
   text-align: center;
   margin-bottom: 1rem;
@@ -110,7 +123,7 @@ button.write-button:hover {
   height: auto;
 }
 
-/* Current asset nav display */
+/* Asset nav area */
 #assetNavInfo {
   display: flex;
   justify-content: space-between;
