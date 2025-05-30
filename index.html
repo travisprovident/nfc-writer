@@ -116,22 +116,34 @@
     async function safeWrite(url, scanBtn) {
       scanBtn.disabled = true;
       scanBtn.textContent = "Scanning...";
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise(resolve => setTimeout(resolve, 250));
+
       try {
         const ndef = new NDEFReader();
+        await ndef.scan(); // Optional scan to stabilize session
+        await new Promise(resolve => setTimeout(resolve, 250));
         await ndef.write({ records: [{ recordType: "url", data: url }] });
-        await new Promise(r => setTimeout(r, 750));
+
+        await new Promise(r => setTimeout(r, 500)); // Cooldown
         successSound.play();
         failCount = 0;
         return true;
       } catch (err) {
         console.error("Write failed:", err);
         failCount++;
-        if (failCount >= 2) {
-          status.textContent = "⚠️ Multiple write failures. Try toggling NFC off/on or restarting Chrome.";
+
+        if (err.name === "NotAllowedError") {
+          status.textContent = "❌ NFC permission denied. Unlock phone or re-tap tag.";
+        } else if (err.name === "AbortError") {
+          status.textContent = "❌ Tag scan aborted. Try again.";
         } else {
           status.textContent = `❌ Write failed: ${err.message}`;
         }
+
+        if (failCount >= 2) {
+          status.textContent += " ⚠️ Multiple failures — try toggling NFC or restarting Chrome.";
+        }
+
         return false;
       } finally {
         scanBtn.disabled = false;
