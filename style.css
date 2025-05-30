@@ -25,29 +25,29 @@ body {
   color: var(--brand-text-color);
 }
 
-/* 🔧 Consistent spacing and alignment */
+/* 🔧 Consistent spacing and centering */
 .form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin-bottom: 1.25rem;
+  text-align: center;
 }
 
 .form-group label {
-  align-self: flex-start;
-  margin-bottom: 0.3rem;
+  display: block;
   font-weight: 500;
+  margin-bottom: 0.3rem;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+/* All input fields and selects get same width and centering */
+input,
+select,
+textarea {
+  display: block;
   width: 100%;
   max-width: 400px;
-  box-sizing: border-box;
+  margin: 0 auto;
   padding: 0.5rem;
   font-size: 1rem;
-  margin-bottom: 0;
+  box-sizing: border-box;
 }
 
 /* 🔶 Write buttons now use brand orange */
@@ -56,6 +56,9 @@ button.write-button {
   color: var(--brand-background-color);
   font-weight: bold;
   border: none;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 button.write-button:hover {
@@ -83,12 +86,17 @@ button.write-button:hover {
   background-color: #fdd;
   color: black;
   font-weight: bold;
+  width: 100%;
+  max-width: 400px;
+  margin: 0.5rem auto 0;
+  padding: 0.5rem;
 }
 
 /* Status message */
 #status {
   margin-top: 1rem;
   font-weight: bold;
+  text-align: center;
 }
 
 /* Mode section visibility */
