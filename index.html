@@ -15,6 +15,7 @@
     #status { margin-top: 1rem; font-weight: bold; }
     .mode-section { display: none; margin-top: 1rem; }
     #resetBtn { background-color: #eee; margin-bottom: 1rem; }
+    #cancelScan { display: none; background-color: #fdd; margin-top: 1rem; }
     #assetNavInfo {
       display: flex;
       justify-content: space-between;
@@ -25,6 +26,7 @@
 </head>
 <body>
   <button id="resetBtn" type="button">🔄 Reset NFC Session</button>
+  <button id="cancelScan">⛔ Cancel Scan</button>
 
   <h2>NFC Tag Writer</h2>
 
@@ -95,10 +97,12 @@
     const batchMode = document.getElementById("batchMode");
     const successSound = document.getElementById("successSound");
     const status = document.getElementById("status");
+    const cancelScanBtn = document.getElementById("cancelScan");
 
     const companySelectSingle = document.getElementById("companySelectSingle");
     const companySelectBatch = document.getElementById("companySelectBatch");
     let failCount = 0;
+    let abortController = null;
 
     companySelectSingle.addEventListener("change", () => {
       const val = companySelectSingle.value;
@@ -121,6 +125,14 @@
 
     document.getElementById("resetBtn").addEventListener("click", () => location.reload());
 
+    cancelScanBtn.addEventListener("click", () => {
+      if (abortController) {
+        abortController.abort();
+        abortController = null;
+        cancelScanBtn.style.display = "none";
+      }
+    });
+
     document.addEventListener("click", () => {
       if (successSound.paused) successSound.play().then(() => successSound.pause()).catch(() => {});
     }, { once: true });
@@ -128,15 +140,18 @@
     async function safeWrite(url, scanBtn) {
       scanBtn.disabled = true;
       scanBtn.textContent = "Scanning...";
-      await new Promise(resolve => setTimeout(resolve, 250));
+      cancelScanBtn.style.display = "block";
+
+      abortController = new AbortController();
+      const { signal } = abortController;
 
       try {
         const ndef = new NDEFReader();
-        await ndef.scan(); // Optional: stabilize the NFC session
+        await ndef.scan({ signal });
         await new Promise(resolve => setTimeout(resolve, 250));
         await ndef.write({ records: [{ recordType: "url", data: url }] });
 
-        await new Promise(r => setTimeout(r, 500)); // Cooldown after write
+        await new Promise(r => setTimeout(r, 500));
         successSound.play();
         failCount = 0;
         return true;
@@ -147,7 +162,7 @@
         if (err.name === "NotAllowedError") {
           status.textContent = "❌ NFC permission denied. Unlock phone or re-tap tag.";
         } else if (err.name === "AbortError") {
-          status.textContent = "❌ Tag scan aborted. Try again.";
+          status.textContent = "❌ Scan canceled.";
         } else {
           status.textContent = `❌ Write failed: ${err.message}`;
         }
@@ -160,6 +175,8 @@
       } finally {
         scanBtn.disabled = false;
         scanBtn.textContent = scanBtn.dataset.originalText;
+        cancelScanBtn.style.display = "none";
+        abortController = null;
       }
     }
 
@@ -221,7 +238,6 @@
       document.getElementById("assetCountDisplay").textContent = `Asset ${batchIndex + 1} of ${batchAssets.length}`;
     }
 
-    // Ensure correct mode shows on initial load
     modeSelect.dispatchEvent(new Event("change"));
   </script>
 </body>
