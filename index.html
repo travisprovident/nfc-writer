@@ -4,23 +4,9 @@
   <title>NFC Write</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      max-width: 500px;
-      margin: auto;
-    }
-    input, button {
-      margin-top: 0.5rem;
-      display: block;
-      width: 100%;
-      padding: 0.5rem;
-      font-size: 1rem;
-    }
-    #status {
-      margin-top: 1rem;
-      font-weight: bold;
-    }
+    body { font-family: sans-serif; padding: 2rem; }
+    input, button { margin-top: 0.5rem; display: block; width: 100%; padding: 0.5rem; font-size: 1rem; }
+    #status { margin-top: 1rem; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -37,7 +23,6 @@
 
   <div id="status"></div>
 
-  <!-- Success Ding Sound -->
   <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-confirmation-tone-2867.mp3" preload="auto"></audio>
 
   <script>
@@ -54,13 +39,14 @@
       const fullUrl = `${base}${id}`;
 
       try {
-        const writer = new NDEFWriter();
+        const ndef = new NDEFReader();
         status.textContent = "📡 Scanning… touch a tag to write.";
-
-        await writer.write({ records: [{ recordType: "url", data: fullUrl }] });
+        await ndef.write({
+          records: [{ recordType: "url", data: fullUrl }]
+        });
 
         document.getElementById("successSound").play();
-        status.textContent = `✅ Tag written: ${fullUrl}`;
+        status.textContent = `✅ Tag written successfully: ${fullUrl}`;
         document.getElementById("assetId").value = "";
       } catch (err) {
         status.textContent = `❌ Write failed: ${err.message}`;
@@ -68,6 +54,9 @@
       }
     });
   </script>
+
+</body>
+</html>
 
 </body>
 </html>
