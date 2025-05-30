@@ -28,16 +28,15 @@
   <label>Asset ID</label>
   <input id="assetId" type="text" placeholder="Enter asset ID" />
 
-  <!-- ✅ Correctly referenced and typed button -->
   <button id="startScan" type="button">Write to NFC Tag</button>
 
   <div id="status"></div>
 
-  <!-- Replace src with your own file if needed -->
+  <!-- Swap this with your own sound file if desired -->
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
 
   <script>
-    // Unlock audio with user gesture
+    // Unlock audio with any user interaction
     document.addEventListener("click", () => {
       const audio = document.getElementById("successSound");
       if (audio.paused) {
@@ -60,11 +59,13 @@
       const ndef = new NDEFReader();
 
       try {
-        // 🔁 Update button state
-        console.log("Button set to scanning...");
+        // UI update before writing
         scanButton.disabled = true;
         scanButton.textContent = "Scanning...";
         status.textContent = "📡 Scanning… touch a tag to write.";
+
+        // 🔑 Let DOM update before blocking write
+        await new Promise(resolve => setTimeout(resolve, 0));
 
         await ndef.write({
           records: [{ recordType: "url", data: fullUrl }]
@@ -76,7 +77,6 @@
         status.textContent = `❌ Write failed: ${err.message}`;
         console.error(err);
       } finally {
-        // ✅ Restore button state
         scanButton.disabled = false;
         scanButton.textContent = "Write to NFC Tag";
       }
