@@ -57,6 +57,8 @@
     cancelBtn.onclick = () => {
       isScanCanceled = true;
       cancelBtn.style.display = "none";
+      writeBtn.disabled = false;
+      writeBtn.textContent = "Write Tag";
       status.textContent = "❌ Scan canceled.";
     };
 
