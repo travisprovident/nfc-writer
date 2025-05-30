@@ -1,9 +1,30 @@
+:root {
+  --brand-background-color: white;
+  --brand-text-color: #333333;
+  --brand-highlight-color: #F26722;
+  --brand-highlight-fade: #ed8573;
+  --brand-highlight-dark-fade: #c5541b;
+  --brand-primary-hover: #d54f0d;
+  --brand-primary-faded: #f6996a;
+  --brand-primary-color: #F26722;
+  --brand-secondary-color: #787878;
+  --brand-tertiary-color: white;
+  --brand-highlight-dark-color: #ff470e;
+  --brand-background-dark-color: #333333;
+  --cactus-scroll-track-color: #f1f1f1;
+  --cactus-scroll-thumb-color: #bababa;
+  --cactus-scroll-thumb-hover-color: #555;
+}
+
 body {
   font-family: sans-serif;
   padding: 2rem;
   max-width: 600px;
   margin: auto;
+  background: var(--brand-background-color);
+  color: var(--brand-text-color);
 }
+
 input, button, textarea, select {
   margin-top: 0.5rem;
   display: block;
@@ -11,36 +32,45 @@ input, button, textarea, select {
   padding: 0.5rem;
   font-size: 1rem;
 }
+
+/* 🔶 Write buttons now use brand orange */
 button.write-button {
-  background-color: #28a745;
-  color: white;
+  background-color: var(--brand-primary-color);
+  color: var(--brand-background-color);
   font-weight: bold;
   border: none;
 }
+
 button.write-button:hover {
-  background-color: #218838;
+  background-color: var(--brand-primary-hover);
 }
-#status {
-  margin-top: 1rem;
-  font-weight: bold;
-}
-.mode-section {
-  display: none;
-  margin-top: 1rem;
-}
-#resetBtn {
-  background-color: #eee;
-  margin-bottom: 1rem;
-}
-#assetNavInfo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 0.5rem;
-}
+
+/* ❌ Cancel button keeps previous style */
 .cancel-scan {
   display: none;
   background-color: #fdd;
   color: black;
   font-weight: bold;
+}
+
+#status {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.mode-section {
+  display: none;
+  margin-top: 1rem;
+}
+
+#resetBtn {
+  background-color: #eee;
+  margin-bottom: 1rem;
+}
+
+#assetNavInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
 }
