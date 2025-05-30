@@ -25,8 +25,13 @@ body {
   color: var(--brand-text-color);
 }
 
-input, button, textarea, select {
-  margin-top: 0.5rem;
+/* ✅ Apply consistent spacing */
+label,
+input,
+select,
+textarea,
+button {
+  margin-top: 1rem;
   display: block;
   width: 100%;
   padding: 0.5rem;
