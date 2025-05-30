@@ -33,6 +33,18 @@ input, button, textarea, select {
   font-size: 1rem;
 }
 
+/* 🔶 Write buttons now use brand orange */
+button.write-button {
+  background-color: var(--brand-primary-color);
+  color: var(--brand-background-color);
+  font-weight: bold;
+  border: none;
+}
+
+button.write-button:hover {
+  background-color: var(--brand-primary-hover);
+}
+
 .reset-button {
   font-size: 0.85rem;
   background-color: transparent;
@@ -45,18 +57,6 @@ input, button, textarea, select {
 .reset-button:hover {
   color: var(--brand-text-color);
   text-decoration: underline;
-}
-
-/* 🔶 Write buttons now use brand orange */
-button.write-button {
-  background-color: var(--brand-primary-color);
-  color: var(--brand-background-color);
-  font-weight: bold;
-  border: none;
-}
-
-button.write-button:hover {
-  background-color: var(--brand-primary-hover);
 }
 
 /* ❌ Cancel button keeps previous style */
