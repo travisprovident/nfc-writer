@@ -25,7 +25,6 @@ body {
   color: var(--brand-text-color);
 }
 
-/* 🔧 Spacing for label + input consistency */
 .form-group {
   margin-bottom: 1.25rem;
 }
@@ -36,11 +35,14 @@ label {
   font-weight: 500;
 }
 
+/* 🎯 Force same visual width across all form elements */
 input,
 select,
 textarea {
   display: block;
   width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
   padding: 0.5rem;
   font-size: 1rem;
   box-sizing: border-box;
@@ -49,19 +51,10 @@ textarea {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-}
-
-/* Match select width visually to inputs */
-select {
   background-color: white;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%204%205'%3E%3Cpath%20fill='gray'%20d='M2%200L0%202h4L2%200zM0%203l2%202l2-2H0z'/%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  background-size: 8px 10px;
-  padding-right: 2rem;
 }
 
-/* 🔶 Write buttons now use brand orange */
+/* 🔶 Write buttons */
 button.write-button {
   background-color: var(--brand-primary-color);
   color: var(--brand-background-color);
@@ -69,13 +62,15 @@ button.write-button {
   border: none;
   padding: 0.5rem;
   width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 button.write-button:hover {
   background-color: var(--brand-primary-hover);
 }
 
-/* 🌀 Reset button styling */
+/* 🌀 Reset button */
 .reset-button {
   font-size: 0.85rem;
   background-color: transparent;
@@ -90,7 +85,7 @@ button.write-button:hover {
   text-decoration: underline;
 }
 
-/* ❌ Cancel scan styling */
+/* ❌ Cancel scan */
 .cancel-scan {
   display: none;
   background-color: #fdd;
@@ -98,23 +93,23 @@ button.write-button:hover {
   font-weight: bold;
   padding: 0.5rem;
   width: 100%;
-  margin-top: 0.5rem;
+  max-width: 400px;
+  margin: 0.5rem auto 0;
   border-radius: 4px;
 }
 
-/* Status message */
+/* Status */
 #status {
   margin-top: 1rem;
   font-weight: bold;
+  text-align: center;
 }
 
-/* Mode section visibility */
 .mode-section {
   display: none;
   margin-top: 1rem;
 }
 
-/* Logo styling */
 #logoContainer {
   text-align: center;
   margin-bottom: 1rem;
@@ -125,7 +120,6 @@ button.write-button:hover {
   height: auto;
 }
 
-/* Navigation layout */
 #assetNavInfo {
   display: flex;
   justify-content: space-between;
