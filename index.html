@@ -165,13 +165,14 @@
 
     document.getElementById("writeSingle").addEventListener("click", async () => {
       const base = document.getElementById("baseUrlSingle").value.trim();
-      const id = document.getElementById("assetIdSingle").value.trim().toUpperCase();
+      const idRaw = document.getElementById("assetIdSingle").value.trim();
+      const id = idRaw.toUpperCase();
       if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
       const fullUrl = `${base}${id}`;
       const scanBtn = document.getElementById("writeSingle");
       scanBtn.dataset.originalText = "Write to NFC Tag";
       const success = await safeWrite(fullUrl, scanBtn);
-      if (success) status.textContent = `✅ Tag written successfully: ${fullUrl}`;
+      if (success) status.textContent = `✅ Tag written successfully: ${base}${id}`;
     });
 
     document.getElementById("startBatch").addEventListener("click", () => {
@@ -215,7 +216,8 @@
     });
 
     function updateCurrentAssetDisplay() {
-      document.getElementById("currentAsset").textContent = batchAssets[batchIndex];
+      const currentId = batchAssets[batchIndex].toUpperCase();
+      document.getElementById("currentAsset").textContent = currentId;
       document.getElementById("assetCountDisplay").textContent = `Asset ${batchIndex + 1} of ${batchAssets.length}`;
     }
 
