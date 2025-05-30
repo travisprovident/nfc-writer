@@ -15,8 +15,8 @@
   <h2>NFC Tag Writer</h2>
 
   <div class="form-group">
-    <label for="modeSelect">Choose Mode:</label>
-    <select id="modeSelect" class="form-control">
+    <label>Choose Mode:</label>
+    <select id="modeSelect">
       <option value="single">Single Asset</option>
       <option value="batch">Batch Write</option>
     </select>
@@ -24,8 +24,8 @@
 
   <div id="singleMode" class="mode-section">
     <div class="form-group">
-      <label for="companySelectSingle">Choose Company:</label>
-      <select id="companySelectSingle" class="form-control">
+      <label>Choose Company:</label>
+      <select id="companySelectSingle">
         <option value="">-- Select Company --</option>
         <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
         <option value="https://tinyurl.com/2e88evx9?id=">Ideal Asset Tracker</option>
@@ -36,13 +36,13 @@
     </div>
 
     <div class="form-group">
-      <label for="baseUrlSingle">Base URL</label>
-      <input id="baseUrlSingle" type="text" placeholder="Enter base URL" class="form-control" />
+      <label>Base URL</label>
+      <input id="baseUrlSingle" type="text" placeholder="Enter base URL" />
     </div>
 
     <div class="form-group">
-      <label for="assetIdSingle">Asset ID</label>
-      <input id="assetIdSingle" type="text" placeholder="Enter asset ID" class="form-control" />
+      <label>Asset ID</label>
+      <input id="assetIdSingle" type="text" placeholder="Enter asset ID" />
     </div>
 
     <div class="form-group">
@@ -53,8 +53,8 @@
 
   <div id="batchMode" class="mode-section">
     <div class="form-group">
-      <label for="companySelectBatch">Choose Company:</label>
-      <select id="companySelectBatch" class="form-control">
+      <label>Choose Company:</label>
+      <select id="companySelectBatch">
         <option value="">-- Select Company --</option>
         <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
         <option value="https://tinyurl.com/2e88evx9?id=">Ideal Asset Tracker</option>
@@ -65,17 +65,17 @@
     </div>
 
     <div class="form-group">
-      <label for="baseUrlBatch">Base URL</label>
-      <input id="baseUrlBatch" type="text" placeholder="Enter base URL" class="form-control" />
+      <label>Base URL</label>
+      <input id="baseUrlBatch" type="text" placeholder="Enter base URL" />
     </div>
 
     <div class="form-group">
-      <label for="assetList">Asset ID List (one per line)</label>
-      <textarea id="assetList" rows="5" placeholder="123\n124\n125" class="form-control"></textarea>
+      <label>Asset ID List (one per line)</label>
+      <textarea id="assetList" rows="5" placeholder="123\n124\n125"></textarea>
     </div>
 
     <div class="form-group">
-      <button id="startBatch" class="form-control">Start Batch Write</button>
+      <button id="startBatch">Start Batch Write</button>
     </div>
 
     <div id="batchControls" style="display:none;">
@@ -87,7 +87,7 @@
         <button id="writeBatch" class="write-button">Write Tag for Current Asset</button>
         <button id="cancelScanBatch" class="cancel-scan">❌ Cancel Scan</button>
       </div>
-      <div class="form-group" style="display: flex; gap: 0.5rem; justify-content: center;">
+      <div class="form-group" style="display: flex; gap: 0.5rem;">
         <button id="prevAsset">⬅️ Previous</button>
         <button id="nextAsset">Next ➡️</button>
       </div>
