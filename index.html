@@ -14,10 +14,12 @@
     }
     #status { margin-top: 1rem; font-weight: bold; }
     .mode-section { display: none; margin-top: 1rem; }
-    #resetBtn { margin-top: 1rem; background-color: #eee; }
+    #resetBtn { background-color: #eee; margin-bottom: 1rem; }
   </style>
 </head>
 <body>
+  <button id="resetBtn" type="button">🔄 Reset NFC Session</button>
+
   <h2>NFC Tag Writer</h2>
 
   <label>Choose Mode:</label>
@@ -71,8 +73,6 @@
       <button id="nextAsset">Next Asset</button>
     </div>
   </div>
-
-  <button id="resetBtn" type="button">🔄 Reset NFC Session</button>
 
   <div id="status"></div>
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
