@@ -188,10 +188,20 @@
         updateCurrentAssetDisplay();
         status.textContent = "";
       } else {
-        status.textContent = "✅ All assets written.";
-        document.getElementById("batchControls").style.display = "none";
+        status.textContent = "✅ All assets written. You're at the end of the list.";
       }
     });
+
+    document.getElementById("prevAsset").addEventListener("click", () => {
+      if (batchIndex > 0) {
+        batchIndex--;
+        updateCurrentAssetDisplay();
+        status.textContent = "";
+      } else {
+        status.textContent = "⚠️ Already at the first asset.";
+      }
+    });
+
 
     function updateCurrentAssetDisplay() {
       document.getElementById("currentAsset").textContent = batchAssets[batchIndex];
