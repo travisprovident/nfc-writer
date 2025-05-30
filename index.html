@@ -69,8 +69,8 @@
     const prevBtn = document.getElementById("prevBtn");
 
     let batchAssets = [], index = 0;
-    let isScanCanceled = false;
-    let writeCooldown = false;
+    let cancelRequested = false;
+    let scanCooldown = false;
 
     document.getElementById("resetBtn").onclick = () => location.reload();
 
@@ -104,28 +104,29 @@
     };
 
     cancelScanBtn.onclick = async () => {
-      isScanCanceled = true;
+      cancelRequested = true;
       cancelScanBtn.style.display = "none";
       writeBtn.disabled = true;
       writeBtn.textContent = "Resetting...";
       nextBtn.disabled = true;
       prevBtn.disabled = true;
-      status.textContent = "❌ Scan canceled. Resetting...";
+      status.textContent = "❌ Scan canceled. Please move phone away from tag...";
 
-      await new Promise(r => setTimeout(r, 1000));
-      isScanCanceled = false;
-      writeCooldown = false;
+      scanCooldown = true;
+      await new Promise(r => setTimeout(r, 3000)); // Let NFC settle
 
       writeBtn.disabled = false;
       writeBtn.textContent = "Write Tag";
       nextBtn.disabled = false;
       prevBtn.disabled = false;
-      status.textContent = "✅ Ready for next scan.";
+      status.textContent = "✅ Ready to scan again.";
+      scanCooldown = false;
+      cancelRequested = false;
     };
 
     writeBtn.onclick = async () => {
-      if (writeCooldown) {
-        status.textContent = "❗ Please wait a moment before trying again.";
+      if (scanCooldown) {
+        status.textContent = "⏳ Please wait for scanner to reset...";
         return;
       }
 
@@ -133,24 +134,26 @@
       const assetId = batchAssets[index];
       const fullUrl = base + assetId;
 
-      isScanCanceled = false;
+      cancelRequested = false;
       cancelScanBtn.style.display = "inline-block";
       writeBtn.disabled = true;
       writeBtn.textContent = "Waiting for tag...";
       nextBtn.disabled = true;
       prevBtn.disabled = true;
-      status.textContent = "Touch the tag to write...";
+      status.textContent = "Touch tag to write...";
 
       try {
         const ndef = new NDEFReader();
         await ndef.write({ records: [{ recordType: "url", data: fullUrl }] });
-        if (!isScanCanceled) {
+        if (!cancelRequested) {
           successSound.play();
           status.textContent = `✅ Tag written for asset ${assetId}`;
         }
       } catch (err) {
-        if (isScanCanceled) {
-          status.textContent = "❌ Write canceled.";
+        if (cancelRequested) {
+          status.textContent = "❌ Scan canceled.";
+        } else if (err.message.includes("push is canceled")) {
+          status.textContent = "❌ Please wait for scanner to reset before trying again.";
         } else {
           status.textContent = `❌ ${err.message}`;
         }
@@ -160,9 +163,6 @@
         writeBtn.textContent = "Write Tag";
         nextBtn.disabled = false;
         prevBtn.disabled = false;
-
-        writeCooldown = true;
-        setTimeout(() => { writeCooldown = false; }, 1000);
       }
     };
   </script>
