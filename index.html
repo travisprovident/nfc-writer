@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NFC Writer - Single & Batch Mode</title>
+  <title>NFC Tag Writer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
@@ -13,7 +13,6 @@
       font-size: 1rem;
     }
     #status { margin-top: 1rem; font-weight: bold; }
-    .mode-section { display: none; margin-top: 1rem; }
     #resetBtn { background-color: #eee; margin-bottom: 1rem; }
     #cancelScanBtn {
       display: none;
@@ -30,66 +29,29 @@
   </style>
 </head>
 <body>
-  <button id="resetBtn" type="button">🔄 Reset NFC Session</button>
+
+  <button id="resetBtn">🔄 Reset NFC Session</button>
 
   <h2>NFC Tag Writer</h2>
 
-  <label>Choose Mode:</label>
-  <select id="modeSelect">
-    <option value="single">Single Asset</option>
-    <option value="batch">Batch Write</option>
-  </select>
+  <label>Base URL</label>
+  <input id="baseUrl" type="text" value="https://tinyurl.com/yr4c8nfc?id=">
 
-  <div id="singleMode" class="mode-section">
-    <label>Choose Company:</label>
-    <select id="companySelectSingle">
-      <option value="">-- Select Company --</option>
-      <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
-      <option value="https://tinyurl.com/2e88evx9?id=">Ideal Asset Tracker</option>
-      <option value="https://tinyurl.com/2fc45ykf?id=">Alpha Asset Tracker</option>
-      <option value="https://tinyurl.com/2cpxwvxn?id=">Ensign Asset Tracker</option>
-      <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
-    </select>
+  <label>Asset ID List (one per line)</label>
+  <textarea id="assetList" rows="5" placeholder="123\n124\n125"></textarea>
 
-    <label>Base URL</label>
-    <input id="baseUrlSingle" type="text" placeholder="Enter base URL" />
+  <button id="startBatch">Start Batch</button>
 
-    <label>Asset ID</label>
-    <input id="assetIdSingle" type="text" placeholder="Enter asset ID" />
-
-    <button id="writeSingle" type="button">Write to NFC Tag</button>
-  </div>
-
-  <div id="batchMode" class="mode-section">
-    <label>Choose Company:</label>
-    <select id="companySelectBatch">
-      <option value="">-- Select Company --</option>
-      <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
-      <option value="https://tinyurl.com/2e88evx9?id=">Ideal Asset Tracker</option>
-      <option value="https://tinyurl.com/2fc45ykf?id=">Alpha Asset Tracker</option>
-      <option value="https://tinyurl.com/2cpxwvxn?id=">Ensign Asset Tracker</option>
-      <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
-    </select>
-
-    <label>Base URL</label>
-    <input id="baseUrlBatch" type="text" placeholder="Enter base URL" />
-
-    <label>Asset ID List (one per line)</label>
-    <textarea id="assetList" rows="5" placeholder="123\n124\n125"></textarea>
-
-    <button id="startBatch">Start Batch Write</button>
-
-    <div id="batchControls" style="display:none;">
-      <div id="assetNavInfo">
-        <p><strong>Current Asset:</strong> <span id="currentAsset"></span></p>
-        <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
-      </div>
-      <button id="writeBatch">Write Tag for Current Asset</button>
-      <button id="cancelScanBtn" type="button">❌ Cancel Scan</button>
-      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-        <button id="prevAsset">⬅️ Previous</button>
-        <button id="nextAsset">Next ➡️</button>
-      </div>
+  <div id="batchControls" style="display:none;">
+    <div id="assetNavInfo">
+      <p><strong>Current Asset:</strong> <span id="currentAsset"></span></p>
+      <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
+    </div>
+    <button id="writeBtn">Write Tag</button>
+    <button id="cancelScanBtn">❌ Cancel Scan</button>
+    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+      <button id="prevBtn">⬅️ Previous</button>
+      <button id="nextBtn">Next ➡️</button>
     </div>
   </div>
 
@@ -97,150 +59,96 @@
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
 
   <script>
-    const modeSelect = document.getElementById("modeSelect");
-    const singleMode = document.getElementById("singleMode");
-    const batchMode = document.getElementById("batchMode");
-    const successSound = document.getElementById("successSound");
-    const status = document.getElementById("status");
-
-    const companySelectSingle = document.getElementById("companySelectSingle");
-    const companySelectBatch = document.getElementById("companySelectBatch");
-    const nextAssetBtn = document.getElementById("nextAsset");
-    const prevAssetBtn = document.getElementById("prevAsset");
+    const baseUrlInput = document.getElementById("baseUrl");
+    const assetListInput = document.getElementById("assetList");
+    const writeBtn = document.getElementById("writeBtn");
     const cancelScanBtn = document.getElementById("cancelScanBtn");
+    const status = document.getElementById("status");
+    const successSound = document.getElementById("successSound");
 
-    let failCount = 0;
+    let batchAssets = [], index = 0;
     let isScanCanceled = false;
 
-    cancelScanBtn.addEventListener("click", () => {
+    document.getElementById("resetBtn").onclick = () => location.reload();
+
+    document.getElementById("startBatch").onclick = () => {
+      batchAssets = assetListInput.value.trim().split("\n").map(id => id.trim().toUpperCase()).filter(Boolean);
+      if (!batchAssets.length) {
+        status.textContent = "❗ Enter at least one asset ID.";
+        return;
+      }
+      index = 0;
+      document.getElementById("batchControls").style.display = "block";
+      updateDisplay();
+    };
+
+    function updateDisplay() {
+      const id = batchAssets[index];
+      document.getElementById("currentAsset").textContent = id;
+      document.getElementById("assetCountDisplay").textContent = `Asset ${index + 1} of ${batchAssets.length}`;
+    }
+
+    document.getElementById("nextBtn").onclick = () => {
+      if (index < batchAssets.length - 1) index++;
+      updateDisplay();
+      status.textContent = "";
+    };
+
+    document.getElementById("prevBtn").onclick = () => {
+      if (index > 0) index--;
+      updateDisplay();
+      status.textContent = "";
+    };
+
+    cancelScanBtn.onclick = () => {
       isScanCanceled = true;
       cancelScanBtn.style.display = "none";
-      document.getElementById("writeBatch").disabled = false;
-      document.getElementById("writeBatch").textContent = "Write Tag for Current Asset";
-      nextAssetBtn.disabled = false;
-      prevAssetBtn.disabled = false;
+      writeBtn.disabled = false;
+      writeBtn.textContent = "Write Tag";
+      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("prevBtn").disabled = false;
       status.textContent = "❌ Scan canceled.";
-    });
+    };
 
-    companySelectSingle.addEventListener("change", () => {
-      const val = companySelectSingle.value;
-      if (val) document.getElementById("baseUrlSingle").value = val;
-    });
+    writeBtn.onclick = async () => {
+      const base = baseUrlInput.value.trim();
+      const assetId = batchAssets[index];
+      const fullUrl = base + assetId;
 
-    companySelectBatch.addEventListener("change", () => {
-      const val = companySelectBatch.value;
-      if (val) document.getElementById("baseUrlBatch").value = val;
-    });
-
-    let batchAssets = [];
-    let batchIndex = 0;
-
-    modeSelect.addEventListener("change", () => {
-      singleMode.style.display = modeSelect.value === "single" ? "block" : "none";
-      batchMode.style.display = modeSelect.value === "batch" ? "block" : "none";
-      status.textContent = "";
-    });
-
-    document.getElementById("resetBtn").addEventListener("click", () => location.reload());
-
-    document.addEventListener("click", () => {
-      if (successSound.paused) successSound.play().then(() => successSound.pause()).catch(() => {});
-    }, { once: true });
-
-    async function safeWrite(url, scanBtn) {
-      // ✅ Fix: always reset cancel flag before every write
       isScanCanceled = false;
       cancelScanBtn.style.display = "inline-block";
-
-      scanBtn.disabled = true;
-      document.getElementById("nextAsset").disabled = true;
-      document.getElementById("prevAsset").disabled = true;
-      scanBtn.textContent = "Scanning...";
-      await new Promise(resolve => setTimeout(resolve, 250));
+      writeBtn.disabled = true;
+      writeBtn.textContent = "Scanning...";
+      document.getElementById("nextBtn").disabled = true;
+      document.getElementById("prevBtn").disabled = true;
 
       try {
         const ndef = new NDEFReader();
         await ndef.scan();
-        await new Promise(resolve => setTimeout(resolve, 250));
-        
-        // ✅ Cancel scan check — if triggered, exit early
-        if (isScanCanceled) return false;
+        await new Promise(r => setTimeout(r, 250));
+        if (isScanCanceled) {
+          await new Promise(r => setTimeout(r, 500)); // cooldown
+          return;
+        }
 
-        await ndef.write({ records: [{ recordType: "url", data: url }] });
-        await new Promise(r => setTimeout(r, 500));
-        document.getElementById("successSound").play();
-        return true;
+        await ndef.write({ records: [{ recordType: "url", data: fullUrl }] });
+        await new Promise(r => setTimeout(r, 300));
+        successSound.play();
+        status.textContent = `✅ Tag written for asset ${assetId}`;
       } catch (err) {
-        document.getElementById("status").textContent = `❌ ${err.message}`;
-        return false;
+        if (err.message.includes("push is canceled")) {
+          status.textContent = "❌ Scan interrupted. Try again.";
+        } else {
+          status.textContent = `❌ ${err.message}`;
+        }
       } finally {
         cancelScanBtn.style.display = "none";
-        scanBtn.disabled = false;
-        document.getElementById("nextAsset").disabled = false;
-        document.getElementById("prevAsset").disabled = false;
-        scanBtn.textContent = scanBtn.dataset.originalText;
+        writeBtn.disabled = false;
+        writeBtn.textContent = "Write Tag";
+        document.getElementById("nextBtn").disabled = false;
+        document.getElementById("prevBtn").disabled = false;
       }
-    }
-
-    document.getElementById("writeSingle").addEventListener("click", async () => {
-      const base = document.getElementById("baseUrlSingle").value.trim();
-      const idRaw = document.getElementById("assetIdSingle").value.trim();
-      const id = idRaw.toUpperCase();
-      if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
-      const fullUrl = `${base}${id}`;
-      const scanBtn = document.getElementById("writeSingle");
-      scanBtn.dataset.originalText = "Write to NFC Tag";
-      const success = await safeWrite(fullUrl, scanBtn);
-      if (success) status.textContent = `✅ Tag written successfully: ${base}${id}`;
-    });
-
-    document.getElementById("startBatch").addEventListener("click", () => {
-      const list = document.getElementById("assetList").value.trim().split("\n").filter(l => l);
-      if (list.length === 0) return status.textContent = "❗ Enter at least one asset ID.";
-      batchAssets = list.map(id => id.trim().toUpperCase());
-      batchIndex = 0;
-      document.getElementById("batchControls").style.display = "block";
-      updateCurrentAssetDisplay();
-    });
-
-    document.getElementById("writeBatch").addEventListener("click", async () => {
-      const base = document.getElementById("baseUrlBatch").value.trim();
-      const id = batchAssets[batchIndex].toUpperCase();
-      if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
-      const fullUrl = `${base}${id}`;
-      const scanBtn = document.getElementById("writeBatch");
-      scanBtn.dataset.originalText = "Write Tag for Current Asset";
-      const success = await safeWrite(fullUrl, scanBtn);
-      if (success) status.textContent = `✅ Tag written for asset ${id}`;
-    });
-
-    document.getElementById("nextAsset").addEventListener("click", () => {
-      if (batchIndex + 1 < batchAssets.length) {
-        batchIndex++;
-        updateCurrentAssetDisplay();
-        status.textContent = "";
-      } else {
-        status.textContent = "✅ All assets written. You're at the end of the list.";
-      }
-    });
-
-    document.getElementById("prevAsset").addEventListener("click", () => {
-      if (batchIndex > 0) {
-        batchIndex--;
-        updateCurrentAssetDisplay();
-        status.textContent = "";
-      } else {
-        status.textContent = "⚠️ Already at the first asset.";
-      }
-    });
-
-    function updateCurrentAssetDisplay() {
-      const currentId = batchAssets[batchIndex].toUpperCase();
-      document.getElementById("currentAsset").textContent = currentId;
-      document.getElementById("assetCountDisplay").textContent = `Asset ${batchIndex + 1} of ${batchAssets.length}`;
-    }
-
-    modeSelect.dispatchEvent(new Event("change"));
+    };
   </script>
 </body>
 </html>
