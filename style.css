@@ -2,18 +2,9 @@
   --brand-background-color: white;
   --brand-text-color: #333333;
   --brand-highlight-color: #F26722;
-  --brand-highlight-fade: #ed8573;
-  --brand-highlight-dark-fade: #c5541b;
-  --brand-primary-hover: #d54f0d;
-  --brand-primary-faded: #f6996a;
+  --brand-highlight-hover: #d54f0d;
   --brand-primary-color: #F26722;
   --brand-secondary-color: #787878;
-  --brand-tertiary-color: white;
-  --brand-highlight-dark-color: #ff470e;
-  --brand-background-dark-color: #333333;
-  --cactus-scroll-track-color: #f1f1f1;
-  --cactus-scroll-thumb-color: #bababa;
-  --cactus-scroll-thumb-hover-color: #555;
 }
 
 body {
@@ -25,25 +16,23 @@ body {
   color: var(--brand-text-color);
 }
 
-/* Keep labels and inputs aligned and consistent */
+/* Unified width container for all form fields */
 .form-group {
   margin-bottom: 1.25rem;
-}
-
-.form-group label {
-  display: block;
-  font-weight: 500;
-  margin-bottom: 0.3rem;
-}
-
-.form-control {
   max-width: 400px;
-  width: 100%;
 }
 
-.form-control select,
-.form-control input,
-.form-control textarea {
+/* Keep labels and inputs aligned */
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+  text-align: left;
+}
+
+input,
+select,
+textarea {
   display: block;
   width: 100%;
   padding: 0.5rem;
@@ -51,26 +40,24 @@ body {
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
-  appearance: none;
   background-color: white;
+  appearance: none;
 }
 
-/* Write buttons */
+/* Buttons */
 button.write-button {
   background-color: var(--brand-primary-color);
-  color: var(--brand-background-color);
+  color: white;
   font-weight: bold;
   border: none;
   padding: 0.5rem;
   width: 100%;
-  max-width: 400px;
 }
 
 button.write-button:hover {
-  background-color: var(--brand-primary-hover);
+  background-color: var(--brand-highlight-hover);
 }
 
-/* Reset button */
 .reset-button {
   font-size: 0.85rem;
   background-color: transparent;
@@ -93,12 +80,11 @@ button.write-button:hover {
   font-weight: bold;
   padding: 0.5rem;
   width: 100%;
-  max-width: 400px;
   margin-top: 0.5rem;
   border-radius: 4px;
 }
 
-/* Status */
+/* Miscellaneous */
 #status {
   margin-top: 1rem;
   font-weight: bold;
@@ -110,7 +96,6 @@ button.write-button:hover {
   margin-top: 1rem;
 }
 
-/* Logo */
 #logoContainer {
   text-align: center;
   margin-bottom: 1rem;
@@ -121,7 +106,6 @@ button.write-button:hover {
   height: auto;
 }
 
-/* Nav info */
 #assetNavInfo {
   display: flex;
   justify-content: space-between;
