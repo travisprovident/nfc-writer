@@ -1,0 +1,46 @@
+body {
+  font-family: sans-serif;
+  padding: 2rem;
+  max-width: 600px;
+  margin: auto;
+}
+input, button, textarea, select {
+  margin-top: 0.5rem;
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+button.write-button {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+button.write-button:hover {
+  background-color: #218838;
+}
+#status {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+.mode-section {
+  display: none;
+  margin-top: 1rem;
+}
+#resetBtn {
+  background-color: #eee;
+  margin-bottom: 1rem;
+}
+#assetNavInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.cancel-scan {
+  display: none;
+  background-color: #fdd;
+  color: black;
+  font-weight: bold;
+}
