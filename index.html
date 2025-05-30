@@ -5,8 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { font-family: sans-serif; padding: 2rem; max-width: 500px; margin: auto; }
-    input, button { margin-top: 0.5rem; display: block; width: 100%; padding: 0.5rem; font-size: 1rem; }
-    #status { margin-top: 1rem; font-weight: bold; }
+    input, button {
+      margin-top: 0.5rem;
+      display: block;
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    #status {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -23,9 +32,18 @@
 
   <div id="status"></div>
 
+  <!-- ✅ Success Ding -->
   <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-confirmation-tone-2867.mp3" preload="auto"></audio>
 
   <script>
+    // 🔓 Unlock audio on any first user interaction
+    document.addEventListener("click", () => {
+      const audio = document.getElementById("successSound");
+      if (audio.paused) {
+        audio.play().then(() => audio.pause()).catch(() => {});
+      }
+    }, { once: true });
+
     document.getElementById("startScan").addEventListener("click", async () => {
       const base = document.getElementById("baseUrl").value.trim();
       const id = document.getElementById("assetId").value.trim();
@@ -37,15 +55,19 @@
       }
 
       const fullUrl = `${base}${id}`;
+      const ndef = new NDEFReader();
 
       try {
-        const ndef = new NDEFReader(); // ✅ CORRECT class
         status.textContent = "📡 Scanning… touch a tag to write.";
-        await ndef.write({ records: [{ recordType: "url", data: fullUrl }] });
 
+        await ndef.write({
+          records: [{ recordType: "url", data: fullUrl }]
+        });
+
+        // ✅ Only plays on confirmed successful write
         document.getElementById("successSound").play();
         status.textContent = `✅ Tag written successfully: ${fullUrl}`;
-        document.getElementById("assetId").value = "";
+        // Leave asset ID populated for second tag write if needed
       } catch (err) {
         status.textContent = `❌ Write failed: ${err.message}`;
         console.error(err);
@@ -55,3 +77,4 @@
 
 </body>
 </html>
+
