@@ -25,7 +25,7 @@ body {
   color: var(--brand-text-color);
 }
 
-/* 🔧 Consistent spacing and centering */
+/* Form structure and layout */
 .form-group {
   margin-bottom: 1.25rem;
   text-align: center;
@@ -37,10 +37,10 @@ body {
   margin-bottom: 0.3rem;
 }
 
-/* All input fields and selects get same width and centering */
-input,
-select,
-textarea {
+/* Inputs, selects, textareas styled uniformly */
+.form-control,
+button.write-button,
+.cancel-scan {
   display: block;
   width: 100%;
   max-width: 400px;
@@ -50,22 +50,19 @@ textarea {
   box-sizing: border-box;
 }
 
-/* 🔶 Write buttons now use brand orange */
+/* Write button branding */
 button.write-button {
   background-color: var(--brand-primary-color);
   color: var(--brand-background-color);
   font-weight: bold;
   border: none;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
 }
 
 button.write-button:hover {
   background-color: var(--brand-primary-hover);
 }
 
-/* 🌀 Reset button styling */
+/* Reset button at bottom */
 .reset-button {
   font-size: 0.85rem;
   background-color: transparent;
@@ -80,32 +77,29 @@ button.write-button:hover {
   text-decoration: underline;
 }
 
-/* ❌ Cancel scan styling */
+/* Cancel scan styling */
 .cancel-scan {
   display: none;
   background-color: #fdd;
   color: black;
   font-weight: bold;
-  width: 100%;
-  max-width: 400px;
-  margin: 0.5rem auto 0;
-  padding: 0.5rem;
+  margin-top: 0.5rem;
 }
 
-/* Status message */
+/* Status message styling */
 #status {
   margin-top: 1rem;
   font-weight: bold;
   text-align: center;
 }
 
-/* Mode section visibility */
+/* Hide mode sections by default */
 .mode-section {
   display: none;
   margin-top: 1rem;
 }
 
-/* Logo styling */
+/* Logo at top */
 #logoContainer {
   text-align: center;
   margin-bottom: 1rem;
@@ -116,7 +110,7 @@ button.write-button:hover {
   height: auto;
 }
 
-/* Navigation layout */
+/* Current asset nav display */
 #assetNavInfo {
   display: flex;
   justify-content: space-between;
