@@ -14,6 +14,7 @@
     }
     #status { margin-top: 1rem; font-weight: bold; }
     .mode-section { display: none; margin-top: 1rem; }
+    #resetBtn { margin-top: 1rem; background-color: #eee; }
   </style>
 </head>
 <body>
@@ -71,6 +72,8 @@
     </div>
   </div>
 
+  <button id="resetBtn" type="button">🔄 Reset NFC Session</button>
+
   <div id="status"></div>
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
 
@@ -83,6 +86,7 @@
 
     const companySelectSingle = document.getElementById("companySelectSingle");
     const companySelectBatch = document.getElementById("companySelectBatch");
+    let failCount = 0;
 
     companySelectSingle.addEventListener("change", () => {
       const val = companySelectSingle.value;
@@ -103,9 +107,37 @@
       status.textContent = "";
     });
 
+    document.getElementById("resetBtn").addEventListener("click", () => location.reload());
+
     document.addEventListener("click", () => {
       if (successSound.paused) successSound.play().then(() => successSound.pause()).catch(() => {});
     }, { once: true });
+
+    async function safeWrite(url, scanBtn) {
+      scanBtn.disabled = true;
+      scanBtn.textContent = "Scanning...";
+      await new Promise(resolve => setTimeout(resolve, 0));
+      try {
+        const ndef = new NDEFReader();
+        await ndef.write({ records: [{ recordType: "url", data: url }] });
+        await new Promise(r => setTimeout(r, 750));
+        successSound.play();
+        failCount = 0;
+        return true;
+      } catch (err) {
+        console.error("Write failed:", err);
+        failCount++;
+        if (failCount >= 2) {
+          status.textContent = "⚠️ Multiple write failures. Try toggling NFC off/on or restarting Chrome.";
+        } else {
+          status.textContent = `❌ Write failed: ${err.message}`;
+        }
+        return false;
+      } finally {
+        scanBtn.disabled = false;
+        scanBtn.textContent = scanBtn.dataset.originalText;
+      }
+    }
 
     document.getElementById("writeSingle").addEventListener("click", async () => {
       const base = document.getElementById("baseUrlSingle").value.trim();
@@ -113,20 +145,9 @@
       if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
       const fullUrl = `${base}${id}`;
       const scanBtn = document.getElementById("writeSingle");
-      scanBtn.disabled = true;
-      scanBtn.textContent = "Scanning...";
-      await new Promise(resolve => setTimeout(resolve, 0));
-      try {
-        const ndef = new NDEFReader();
-        await ndef.write({ records: [{ recordType: "url", data: fullUrl }] });
-        successSound.play();
-        status.textContent = `✅ Tag written successfully: ${fullUrl}`;
-      } catch (err) {
-        status.textContent = `❌ Write failed: ${err.message}`;
-      } finally {
-        scanBtn.disabled = false;
-        scanBtn.textContent = "Write to NFC Tag";
-      }
+      scanBtn.dataset.originalText = "Write to NFC Tag";
+      const success = await safeWrite(fullUrl, scanBtn);
+      if (success) status.textContent = `✅ Tag written successfully: ${fullUrl}`;
     });
 
     document.getElementById("startBatch").addEventListener("click", () => {
@@ -144,20 +165,9 @@
       if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
       const fullUrl = `${base}${id}`;
       const scanBtn = document.getElementById("writeBatch");
-      scanBtn.disabled = true;
-      scanBtn.textContent = "Scanning...";
-      await new Promise(resolve => setTimeout(resolve, 0));
-      try {
-        const ndef = new NDEFReader();
-        await ndef.write({ records: [{ recordType: "url", data: fullUrl }] });
-        successSound.play();
-        status.textContent = `✅ Tag written for asset ${id}`;
-      } catch (err) {
-        status.textContent = `❌ Write failed: ${err.message}`;
-      } finally {
-        scanBtn.disabled = false;
-        scanBtn.textContent = "Write Tag for Current Asset";
-      }
+      scanBtn.dataset.originalText = "Write Tag for Current Asset";
+      const success = await safeWrite(fullUrl, scanBtn);
+      if (success) status.textContent = `✅ Tag written for asset ${id}`;
     });
 
     document.getElementById("nextAsset").addEventListener("click", () => {
@@ -175,7 +185,6 @@
       document.getElementById("currentAsset").textContent = batchAssets[batchIndex];
     }
 
-    // Show single mode by default
     singleMode.style.display = "block";
   </script>
 </body>
