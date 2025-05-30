@@ -25,13 +25,13 @@ body {
   color: var(--brand-text-color);
 }
 
-/* Form structure spacing */
+/* 🔧 Spacing for label + input consistency */
 .form-group {
-  margin-bottom: 1.25rem; /* More space between sections */
+  margin-bottom: 1.25rem;
 }
 
 label {
-  margin-bottom: 0.25rem;  /* Tighten label to input */
+  margin-bottom: 0.3rem;
   display: block;
   font-weight: 500;
 }
@@ -44,7 +44,7 @@ button {
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
-  margin-bottom: 0; /* Remove extra space between inputs */
+  margin-bottom: 0;
 }
 
 /* 🔶 Write buttons now use brand orange */
@@ -59,6 +59,7 @@ button.write-button:hover {
   background-color: var(--brand-primary-hover);
 }
 
+/* 🌀 Reset button styling */
 .reset-button {
   font-size: 0.85rem;
   background-color: transparent;
@@ -73,7 +74,7 @@ button.write-button:hover {
   text-decoration: underline;
 }
 
-/* ❌ Cancel button style */
+/* ❌ Cancel scan styling */
 .cancel-scan {
   display: none;
   background-color: #fdd;
@@ -81,16 +82,19 @@ button.write-button:hover {
   font-weight: bold;
 }
 
+/* Status message */
 #status {
   margin-top: 1rem;
   font-weight: bold;
 }
 
+/* Mode section visibility */
 .mode-section {
   display: none;
   margin-top: 1rem;
 }
 
+/* Logo styling */
 #logoContainer {
   text-align: center;
   margin-bottom: 1rem;
@@ -101,11 +105,7 @@ button.write-button:hover {
   height: auto;
 }
 
-#resetBtn {
-  background-color: #eee;
-  margin-bottom: 1rem;
-}
-
+/* Navigation layout */
 #assetNavInfo {
   display: flex;
   justify-content: space-between;
