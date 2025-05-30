@@ -70,6 +70,7 @@
 
     let batchAssets = [], index = 0;
     let isScanCanceled = false;
+    let scanCooldown = false;
 
     document.getElementById("resetBtn").onclick = () => location.reload();
 
@@ -106,19 +107,28 @@
       isScanCanceled = true;
       cancelScanBtn.style.display = "none";
       writeBtn.disabled = true;
-      writeBtn.textContent = "Canceling...";
-      status.textContent = "❌ Scan canceled. Resetting NFC...";
+      writeBtn.textContent = "Resetting...";
+      nextBtn.disabled = true;
+      prevBtn.disabled = true;
+      status.textContent = "❌ Scan canceled. Resetting NFC session...";
 
-      await new Promise(r => setTimeout(r, 2000)); // Let Chrome reset
+      scanCooldown = true;
+      await new Promise(r => setTimeout(r, 2000)); // Let NFC stack settle
+      scanCooldown = false;
 
       writeBtn.disabled = false;
       writeBtn.textContent = "Write Tag";
       nextBtn.disabled = false;
       prevBtn.disabled = false;
-      status.textContent = "Ready for next scan.";
+      status.textContent = "✅ NFC session reset. Ready to scan.";
     };
 
     writeBtn.onclick = async () => {
+      if (scanCooldown) {
+        status.textContent = "❌ Please wait for scanner to reset before trying again.";
+        return;
+      }
+
       const base = baseUrlInput.value.trim();
       const assetId = batchAssets[index];
       const fullUrl = base + assetId;
@@ -136,7 +146,7 @@
         await new Promise(r => setTimeout(r, 250));
 
         if (isScanCanceled) {
-          await new Promise(r => setTimeout(r, 500)); // short cooldown
+          await new Promise(r => setTimeout(r, 250));
           return;
         }
 
