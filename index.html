@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
-    input, button, textarea {
+    input, button, textarea, select {
       margin-top: 0.5rem;
       display: block;
       width: 100%;
@@ -26,7 +26,17 @@
   </select>
 
   <div id="singleMode" class="mode-section">
-    <label>Base URL (e.g. https://yourdomain.com/asset?id=)</label>
+    <label>Choose Company:</label>
+    <select id="companySelectSingle">
+      <option value="">-- Select Company --</option>
+      <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
+      <option value="https://tinyurl.com/2e88evx9?id=">Ideal Asset Tracker</option>
+      <option value="https://tinyurl.com/2fc45ykf?id=">Alpha Asset Tracker</option>
+      <option value="https://tinyurl.com/2cpxwvxn?id=">Ensign Asset Tracker</option>
+      <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
+    </select>
+
+    <label>Base URL</label>
     <input id="baseUrlSingle" type="text" placeholder="Enter base URL" />
 
     <label>Asset ID</label>
@@ -36,7 +46,17 @@
   </div>
 
   <div id="batchMode" class="mode-section">
-    <label>Base URL (e.g. https://yourdomain.com/asset?id=)</label>
+    <label>Choose Company:</label>
+    <select id="companySelectBatch">
+      <option value="">-- Select Company --</option>
+      <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
+      <option value="https://tinyurl.com/2e88evx9?id=">Ideal Asset Tracker</option>
+      <option value="https://tinyurl.com/2fc45ykf?id=">Alpha Asset Tracker</option>
+      <option value="https://tinyurl.com/2cpxwvxn?id=">Ensign Asset Tracker</option>
+      <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
+    </select>
+
+    <label>Base URL</label>
     <input id="baseUrlBatch" type="text" placeholder="Enter base URL" />
 
     <label>Asset ID List (one per line)</label>
@@ -60,6 +80,19 @@
     const batchMode = document.getElementById("batchMode");
     const successSound = document.getElementById("successSound");
     const status = document.getElementById("status");
+
+    const companySelectSingle = document.getElementById("companySelectSingle");
+    const companySelectBatch = document.getElementById("companySelectBatch");
+
+    companySelectSingle.addEventListener("change", () => {
+      const val = companySelectSingle.value;
+      if (val) document.getElementById("baseUrlSingle").value = val;
+    });
+
+    companySelectBatch.addEventListener("change", () => {
+      const val = companySelectBatch.value;
+      if (val) document.getElementById("baseUrlBatch").value = val;
+    });
 
     let batchAssets = [];
     let batchIndex = 0;
