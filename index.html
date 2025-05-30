@@ -12,6 +12,15 @@
       padding: 0.5rem;
       font-size: 1rem;
     }
+button.write-button {
+  background-color: #28a745; /* Bootstrap "success" green */
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+button.write-button:hover {
+  background-color: #218838;
+}
     #status { margin-top: 1rem; font-weight: bold; }
     .mode-section { display: none; margin-top: 1rem; }
     #resetBtn { background-color: #eee; margin-bottom: 1rem; }
@@ -54,7 +63,7 @@
     <input id="baseUrlSingle" type="text" placeholder="Enter base URL" />
     <label>Asset ID</label>
     <input id="assetIdSingle" type="text" placeholder="Enter asset ID" />
-    <button id="writeSingle" type="button">Write to NFC Tag</button>
+    <button id="writeSingle" type="button" class="write-button">Write to NFC Tag</button>
     <button id="cancelScanSingle" class="cancel-scan">❌ Cancel Scan</button>
   </div>
 
@@ -79,7 +88,7 @@
         <p><strong>Current Asset:</strong> <span id="currentAsset"></span></p>
         <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
       </div>
-      <button id="writeBatch">Write Tag for Current Asset</button>
+      <button id="writeBatch" class="write-button">Write Tag for Current Asset</button>
       <button id="cancelScanBatch" class="cancel-scan">❌ Cancel Scan</button>
       <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
         <button id="prevAsset">⬅️ Previous</button>
