@@ -1,88 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NFC Writer - Single & Batch Mode</title>
-  <link rel="stylesheet" href="button.css" />
-  <link rel="stylesheet" href="index.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="main">
-    <button id="resetBtn" type="button" class="theme-button-block-empty">🔄 Reset NFC Session</button>
+  <button id="resetBtn" type="button">🔄 Reset NFC Session</button>
 
-    <h2 class="theme-brand">NFC Tag Writer</h2>
+  <h2>NFC Tag Writer</h2>
 
-    <label>Choose Mode:</label>
-    <select id="modeSelect">
-      <option value="single">Single Asset</option>
-      <option value="batch">Batch Write</option>
+  <label>Choose Mode:</label>
+  <select id="modeSelect">
+    <option value="single">Single Asset</option>
+    <option value="batch">Batch Write</option>
+  </select>
+
+  <div id="singleMode" class="mode-section">
+    <label>Choose Company:</label>
+    <select id="companySelectSingle">
+      <option value="">-- Select Company --</option>
+      <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
+      <option value="https://tinyurl.com/2e88evx9?id=">Ideal Asset Tracker</option>
+      <option value="https://tinyurl.com/2fc45ykf?id=">Alpha Asset Tracker</option>
+      <option value="https://tinyurl.com/2cpxwvxn?id=">Ensign Asset Tracker</option>
+      <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
     </select>
-
-    <!-- Single Mode -->
-    <div id="singleMode" class="mode-section">
-      <label>Choose Company:</label>
-      <select id="companySelectSingle">
-        <option value="">-- Select Company --</option>
-        <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
-        <option value="https://tinyurl.com/2e88evx9?id=">Ideal Asset Tracker</option>
-        <option value="https://tinyurl.com/2fc45ykf?id=">Alpha Asset Tracker</option>
-        <option value="https://tinyurl.com/2cpxwvxn?id=">Ensign Asset Tracker</option>
-        <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
-      </select>
-
-      <label>Base URL</label>
-      <input id="baseUrlSingle" type="text" placeholder="Enter base URL" />
-
-      <label>Asset ID</label>
-      <input id="assetIdSingle" type="text" placeholder="Enter asset ID" />
-
-      <button id="writeSingle" type="button" class="theme-button-block">Write to NFC Tag</button>
-      <button id="cancelScanSingle" class="cancel-scan theme-button-block-empty">❌ Cancel Scan</button>
-    </div>
-
-    <!-- Batch Mode -->
-    <div id="batchMode" class="mode-section">
-      <label>Choose Company:</label>
-      <select id="companySelectBatch">
-        <option value="">-- Select Company --</option>
-        <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
-        <option value="https://tinyurl.com/2e88evx9?id=">Ideal Asset Tracker</option>
-        <option value="https://tinyurl.com/2fc45ykf?id=">Alpha Asset Tracker</option>
-        <option value="https://tinyurl.com/2cpxwvxn?id=">Ensign Asset Tracker</option>
-        <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
-      </select>
-
-      <label>Base URL</label>
-      <input id="baseUrlBatch" type="text" placeholder="Enter base URL" />
-
-      <label>Asset ID List (one per line)</label>
-      <textarea id="assetList" rows="5" placeholder="123\n124\n125"></textarea>
-
-      <button id="startBatch" class="theme-button-block">Start Batch Write</button>
-
-      <div id="batchControls" style="display:none;">
-        <div id="assetNavInfo">
-          <p><strong>Current Asset:</strong> <span id="currentAsset"></span></p>
-          <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
-        </div>
-
-        <button id="writeBatch" class="theme-button-block">Write Tag for Current Asset</button>
-        <button id="cancelScanBatch" class="cancel-scan theme-button-block-empty">❌ Cancel Scan</button>
-
-        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-          <button id="prevAsset" class="theme-button-block-empty">⬅️ Previous</button>
-          <button id="nextAsset" class="theme-button-block-empty">Next ➡️</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="status" class="theme-brand"></div>
-    <audio id="successSound" src="ding.mp3" preload="auto"></audio>
+    <label>Base URL</label>
+    <input id="baseUrlSingle" type="text" placeholder="Enter base URL" />
+    <label>Asset ID</label>
+    <input id="assetIdSingle" type="text" placeholder="Enter asset ID" />
+    <button id="writeSingle" type="button" class="write-button">Write to NFC Tag</button>
+    <button id="cancelScanSingle" class="cancel-scan">❌ Cancel Scan</button>
   </div>
 
-  <script src="state.js"></script>
-  <script src="write.js"></script>
-  <script src="main.js"></script>
+  <div id="batchMode" class="mode-section">
+    <label>Choose Company:</label>
+    <select id="companySelectBatch">
+      <option value="">-- Select Company --</option>
+      <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
+      <option value="https://tinyurl.com/2e88evx9?id=">Ideal Asset Tracker</option>
+      <option value="https://tinyurl.com/2fc45ykf?id=">Alpha Asset Tracker</option>
+      <option value="https://tinyurl.com/2cpxwvxn?id=">Ensign Asset Tracker</option>
+      <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
+    </select>
+    <label>Base URL</label>
+    <input id="baseUrlBatch" type="text" placeholder="Enter base URL" />
+    <label>Asset ID List (one per line)</label>
+    <textarea id="assetList" rows="5" placeholder="123\n124\n125"></textarea>
+    <button id="startBatch">Start Batch Write</button>
+
+    <div id="batchControls" style="display:none;">
+      <div id="assetNavInfo">
+        <p><strong>Current Asset:</strong> <span id="currentAsset"></span></p>
+        <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
+      </div>
+      <button id="writeBatch" class="write-button">Write Tag for Current Asset</button>
+      <button id="cancelScanBatch" class="cancel-scan">❌ Cancel Scan</button>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+        <button id="prevAsset">⬅️ Previous</button>
+        <button id="nextAsset">Next ➡️</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="status"></div>
+  <audio id="successSound" src="ding.mp3" preload="auto"></audio>
+
+  <script src="script/state.js"></script>
+  <script src="script/write.js"></script>
+  <script src="script/main.js"></script>
 </body>
 </html>
