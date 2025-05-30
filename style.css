@@ -1,3 +1,4 @@
+
 :root {
   --brand-background-color: white;
   --brand-text-color: #333333;
@@ -25,64 +26,44 @@ body {
   color: var(--brand-text-color);
 }
 
-/* Grouping for input + label */
+/* 🔧 Consistent spacing and alignment */
 .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 1.25rem;
 }
 
-/* Label styling (left-aligned) */
 .form-group label {
-  display: block;
-  font-weight: 500;
+  align-self: flex-start;
   margin-bottom: 0.3rem;
-  text-align: left;
+  font-weight: 500;
 }
 
-/* Inputs and selects */
-input,
-select,
-textarea {
-  display: block;
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
   max-width: 400px;
-  margin: 0 auto;
+  box-sizing: border-box;
   padding: 0.5rem;
   font-size: 1rem;
-  box-sizing: border-box;
+  margin-bottom: 0;
 }
 
-/* Write buttons */
+/* 🔶 Write buttons now use brand orange */
 button.write-button {
   background-color: var(--brand-primary-color);
   color: var(--brand-background-color);
   font-weight: bold;
   border: none;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 0.5rem;
-  display: block;
-  font-size: 1rem;
 }
 
 button.write-button:hover {
   background-color: var(--brand-primary-hover);
 }
 
-/* Cancel scan button */
-.cancel-scan {
-  display: none;
-  background-color: #fdd;
-  color: black;
-  font-weight: bold;
-  width: 100%;
-  max-width: 400px;
-  margin: 0.5rem auto 0;
-  padding: 0.5rem;
-  display: block;
-}
-
-/* Reset button bottom right */
+/* 🌀 Reset button styling */
 .reset-button {
   font-size: 0.85rem;
   background-color: transparent;
@@ -90,8 +71,6 @@ button.write-button:hover {
   border: none;
   cursor: pointer;
   padding: 0.25rem 0.5rem;
-  float: right;
-  margin-top: 2rem;
 }
 
 .reset-button:hover {
@@ -99,11 +78,18 @@ button.write-button:hover {
   text-decoration: underline;
 }
 
+/* ❌ Cancel scan styling */
+.cancel-scan {
+  display: none;
+  background-color: #fdd;
+  color: black;
+  font-weight: bold;
+}
+
 /* Status message */
 #status {
   margin-top: 1rem;
   font-weight: bold;
-  text-align: center;
 }
 
 /* Mode section visibility */
@@ -123,7 +109,7 @@ button.write-button:hover {
   height: auto;
 }
 
-/* Asset nav area */
+/* Navigation layout */
 #assetNavInfo {
   display: flex;
   justify-content: space-between;
