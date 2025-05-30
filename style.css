@@ -38,21 +38,27 @@ label {
 
 input,
 select,
-textarea,
-button {
+textarea {
   display: block;
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
-  margin-bottom: 0;
   box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
-/* 🔧 Normalize widths between dropdowns and text fields */
-input[type="text"],
-select,
-textarea {
-  max-width: 100%;
+/* Match select width visually to inputs */
+select {
+  background-color: white;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%204%205'%3E%3Cpath%20fill='gray'%20d='M2%200L0%202h4L2%200zM0%203l2%202l2-2H0z'/%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 8px 10px;
+  padding-right: 2rem;
 }
 
 /* 🔶 Write buttons now use brand orange */
@@ -61,6 +67,8 @@ button.write-button {
   color: var(--brand-background-color);
   font-weight: bold;
   border: none;
+  padding: 0.5rem;
+  width: 100%;
 }
 
 button.write-button:hover {
@@ -88,6 +96,10 @@ button.write-button:hover {
   background-color: #fdd;
   color: black;
   font-weight: bold;
+  padding: 0.5rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  border-radius: 4px;
 }
 
 /* Status message */
