@@ -67,10 +67,10 @@
     const successSound = document.getElementById("successSound");
     const nextBtn = document.getElementById("nextBtn");
     const prevBtn = document.getElementById("prevBtn");
+    const batchControls = document.getElementById("batchControls");
 
     let batchAssets = [], index = 0;
     let cancelRequested = false;
-    let scanCooldown = false;
 
     document.getElementById("resetBtn").onclick = () => location.reload();
 
@@ -81,7 +81,7 @@
         return;
       }
       index = 0;
-      document.getElementById("batchControls").style.display = "block";
+      showBatchControls();
       updateDisplay();
     };
 
@@ -89,6 +89,11 @@
       const id = batchAssets[index];
       document.getElementById("currentAsset").textContent = id;
       document.getElementById("assetCountDisplay").textContent = `Asset ${index + 1} of ${batchAssets.length}`;
+    }
+
+    function showBatchControls() {
+      batchControls.style.display = "block";
+      window.scrollTo({ top: batchControls.offsetTop - 20, behavior: "smooth" });
     }
 
     nextBtn.onclick = () => {
@@ -103,33 +108,16 @@
       status.textContent = "";
     };
 
-    cancelScanBtn.onclick = async () => {
-      cancelRequested = true;
-      cancelScanBtn.style.display = "none";
-      writeBtn.disabled = true;
-      writeBtn.textContent = "Resetting...";
-      nextBtn.disabled = true;
-      prevBtn.disabled = true;
-      status.textContent = "❌ Scan canceled. Please move phone away from tag...";
-
-      scanCooldown = true;
-      await new Promise(r => setTimeout(r, 3000)); // Let NFC settle
-
-      writeBtn.disabled = false;
-      writeBtn.textContent = "Write Tag";
-      nextBtn.disabled = false;
-      prevBtn.disabled = false;
-      status.textContent = "✅ Ready to scan again.";
-      scanCooldown = false;
-      cancelRequested = false;
+    cancelScanBtn.onclick = () => {
+      // Save state to localStorage before reloading
+      localStorage.setItem("restoreState", "true");
+      localStorage.setItem("savedAssetList", assetListInput.value);
+      localStorage.setItem("savedBaseUrl", baseUrlInput.value);
+      localStorage.setItem("savedIndex", index.toString());
+      location.reload();
     };
 
     writeBtn.onclick = async () => {
-      if (scanCooldown) {
-        status.textContent = "⏳ Please wait for scanner to reset...";
-        return;
-      }
-
       const base = baseUrlInput.value.trim();
       const assetId = batchAssets[index];
       const fullUrl = base + assetId;
@@ -150,13 +138,7 @@
           status.textContent = `✅ Tag written for asset ${assetId}`;
         }
       } catch (err) {
-        if (cancelRequested) {
-          status.textContent = "❌ Scan canceled.";
-        } else if (err.message.includes("push is canceled")) {
-          status.textContent = "❌ Please wait for scanner to reset before trying again.";
-        } else {
-          status.textContent = `❌ ${err.message}`;
-        }
+        status.textContent = `❌ ${err.message}`;
       } finally {
         cancelScanBtn.style.display = "none";
         writeBtn.disabled = false;
@@ -165,6 +147,31 @@
         prevBtn.disabled = false;
       }
     };
+
+    // Restore saved state after reload
+    window.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("restoreState") === "true") {
+        const savedAssets = localStorage.getItem("savedAssetList");
+        const savedUrl = localStorage.getItem("savedBaseUrl");
+        const savedIndex = parseInt(localStorage.getItem("savedIndex"), 10);
+
+        if (savedAssets) assetListInput.value = savedAssets;
+        if (savedUrl) baseUrlInput.value = savedUrl;
+
+        batchAssets = savedAssets.split("\n").map(id => id.trim().toUpperCase()).filter(Boolean);
+        index = isNaN(savedIndex) ? 0 : savedIndex;
+
+        showBatchControls();
+        updateDisplay();
+        status.textContent = "✅ NFC session reset. Ready to scan again.";
+
+        // Clear restore flags
+        localStorage.removeItem("restoreState");
+        localStorage.removeItem("savedAssetList");
+        localStorage.removeItem("savedBaseUrl");
+        localStorage.removeItem("savedIndex");
+      }
+    });
   </script>
 </body>
 </html>
