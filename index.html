@@ -21,7 +21,6 @@
       align-items: center;
       margin-top: 0.5rem;
     }
-    .cancel-scan { display: none; background-color: #fdd; margin-top: 0.5rem; }
   </style>
 </head>
 <body>
@@ -53,7 +52,6 @@
     <input id="assetIdSingle" type="text" placeholder="Enter asset ID" />
 
     <button id="writeSingle" type="button">Write to NFC Tag</button>
-    <button id="cancelSingle" class="cancel-scan" type="button">⛔ Cancel Scan</button>
   </div>
 
   <div id="batchMode" class="mode-section">
@@ -81,7 +79,6 @@
         <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
       </div>
       <button id="writeBatch">Write Tag for Current Asset</button>
-      <button id="cancelBatch" class="cancel-scan" type="button">⛔ Cancel Scan</button>
       <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
         <button id="prevAsset">⬅️ Previous</button>
         <button id="nextAsset">Next ➡️</button>
@@ -93,110 +90,139 @@
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
 
   <script>
-    let cancelRequested = false;
-    const cancelSingle = document.getElementById("cancelSingle");
-    const cancelBatch = document.getElementById("cancelBatch");
+    const modeSelect = document.getElementById("modeSelect");
+    const singleMode = document.getElementById("singleMode");
+    const batchMode = document.getElementById("batchMode");
+    const successSound = document.getElementById("successSound");
+    const status = document.getElementById("status");
 
-    async function startScanAndWrite(url, scanBtn, cancelBtn) {
-      scanBtn.disabled = true;
-      scanBtn.textContent = "Waiting for tag...";
-      cancelBtn.style.display = "block";
-      cancelRequested = false;
+    const companySelectSingle = document.getElementById("companySelectSingle");
+    const companySelectBatch = document.getElementById("companySelectBatch");
+    let failCount = 0;
 
-      try {
-        const ndef = new NDEFReader();
-        await ndef.scan();
-        status.textContent = "📡 Tap an NFC tag to write...";
-
-        ndef.onreading = async () => {
-          if (cancelRequested) return;
-          try {
-            await ndef.write({ records: [{ recordType: "url", data: url }] });
-            document.getElementById("successSound").play();
-            status.textContent = `✅ Tag written: ${url}`;
-          } catch (err) {
-            status.textContent = `❌ Write failed: ${err.message}`;
-          } finally {
-            scanBtn.disabled = false;
-            scanBtn.textContent = scanBtn.dataset.originalText;
-            cancelBtn.style.display = "none";
-          }
-        };
-      } catch (err) {
-        status.textContent = `❌ Scan error: ${err.message}`;
-        scanBtn.disabled = false;
-        scanBtn.textContent = scanBtn.dataset.originalText;
-        cancelBtn.style.display = "none";
-      }
-    }
-
-    cancelSingle.addEventListener("click", () => {
-      cancelRequested = true;
-      cancelSingle.style.display = "none";
-      status.textContent = "❌ Scan canceled.";
+    companySelectSingle.addEventListener("change", () => {
+      const val = companySelectSingle.value;
+      if (val) document.getElementById("baseUrlSingle").value = val;
     });
 
-    cancelBatch.addEventListener("click", () => {
-      cancelRequested = true;
-      cancelBatch.style.display = "none";
-      status.textContent = "❌ Scan canceled.";
-    });
-
-    document.getElementById("writeSingle").addEventListener("click", () => {
-      const base = document.getElementById("baseUrlSingle").value.trim();
-      const id = document.getElementById("assetIdSingle").value.trim().toUpperCase();
-      if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
-      const url = `${base}${id}`;
-      const scanBtn = document.getElementById("writeSingle");
-      scanBtn.dataset.originalText = scanBtn.textContent;
-      startScanAndWrite(url, scanBtn, cancelSingle);
+    companySelectBatch.addEventListener("change", () => {
+      const val = companySelectBatch.value;
+      if (val) document.getElementById("baseUrlBatch").value = val;
     });
 
     let batchAssets = [];
     let batchIndex = 0;
 
+    modeSelect.addEventListener("change", () => {
+      singleMode.style.display = modeSelect.value === "single" ? "block" : "none";
+      batchMode.style.display = modeSelect.value === "batch" ? "block" : "none";
+      status.textContent = "";
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => location.reload());
+
+    document.addEventListener("click", () => {
+      if (successSound.paused) successSound.play().then(() => successSound.pause()).catch(() => {});
+    }, { once: true });
+
+    async function safeWrite(url, scanBtn) {
+      scanBtn.disabled = true;
+      scanBtn.textContent = "Scanning...";
+      await new Promise(resolve => setTimeout(resolve, 250));
+
+      try {
+        const ndef = new NDEFReader();
+        await ndef.scan(); // Optional: stabilize the NFC session
+        await new Promise(resolve => setTimeout(resolve, 250));
+        await ndef.write({ records: [{ recordType: "url", data: url }] });
+
+        await new Promise(r => setTimeout(r, 500)); // Cooldown after write
+        successSound.play();
+        failCount = 0;
+        return true;
+      } catch (err) {
+        console.error("Write failed:", err);
+        failCount++;
+
+        if (err.name === "NotAllowedError") {
+          status.textContent = "❌ NFC permission denied. Unlock phone or re-tap tag.";
+        } else if (err.name === "AbortError") {
+          status.textContent = "❌ Tag scan aborted. Try again.";
+        } else {
+          status.textContent = `❌ Write failed: ${err.message}`;
+        }
+
+        if (failCount >= 2) {
+          status.textContent += " ⚠️ Multiple failures — try toggling NFC or restarting Chrome.";
+        }
+
+        return false;
+      } finally {
+        scanBtn.disabled = false;
+        scanBtn.textContent = scanBtn.dataset.originalText;
+      }
+    }
+
+    document.getElementById("writeSingle").addEventListener("click", async () => {
+      const base = document.getElementById("baseUrlSingle").value.trim();
+      const idRaw = document.getElementById("assetIdSingle").value.trim();
+      const id = idRaw.toUpperCase();
+      if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
+      const fullUrl = `${base}${id}`;
+      const scanBtn = document.getElementById("writeSingle");
+      scanBtn.dataset.originalText = "Write to NFC Tag";
+      const success = await safeWrite(fullUrl, scanBtn);
+      if (success) status.textContent = `✅ Tag written successfully: ${base}${id}`;
+    });
+
     document.getElementById("startBatch").addEventListener("click", () => {
-      const list = document.getElementById("assetList").value.trim().split("\n").filter(Boolean);
+      const list = document.getElementById("assetList").value.trim().split("\n").filter(l => l);
+      if (list.length === 0) return status.textContent = "❗ Enter at least one asset ID.";
       batchAssets = list.map(id => id.trim().toUpperCase());
       batchIndex = 0;
       document.getElementById("batchControls").style.display = "block";
       updateCurrentAssetDisplay();
     });
 
-    document.getElementById("writeBatch").addEventListener("click", () => {
+    document.getElementById("writeBatch").addEventListener("click", async () => {
       const base = document.getElementById("baseUrlBatch").value.trim();
-      const id = batchAssets[batchIndex];
+      const id = batchAssets[batchIndex].toUpperCase();
       if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
-      const url = `${base}${id}`;
+      const fullUrl = `${base}${id}`;
       const scanBtn = document.getElementById("writeBatch");
-      scanBtn.dataset.originalText = scanBtn.textContent;
-      startScanAndWrite(url, scanBtn, cancelBatch);
-    });
-
-    document.getElementById("prevAsset").addEventListener("click", () => {
-      if (batchIndex > 0) batchIndex--;
-      updateCurrentAssetDisplay();
+      scanBtn.dataset.originalText = "Write Tag for Current Asset";
+      const success = await safeWrite(fullUrl, scanBtn);
+      if (success) status.textContent = `✅ Tag written for asset ${id}`;
     });
 
     document.getElementById("nextAsset").addEventListener("click", () => {
-      if (batchIndex < batchAssets.length - 1) batchIndex++;
-      updateCurrentAssetDisplay();
+      if (batchIndex + 1 < batchAssets.length) {
+        batchIndex++;
+        updateCurrentAssetDisplay();
+        status.textContent = "";
+      } else {
+        status.textContent = "✅ All assets written. You're at the end of the list.";
+      }
+    });
+
+    document.getElementById("prevAsset").addEventListener("click", () => {
+      if (batchIndex > 0) {
+        batchIndex--;
+        updateCurrentAssetDisplay();
+        status.textContent = "";
+      } else {
+        status.textContent = "⚠️ Already at the first asset.";
+      }
     });
 
     function updateCurrentAssetDisplay() {
-      document.getElementById("currentAsset").textContent = batchAssets[batchIndex];
+      const currentId = batchAssets[batchIndex].toUpperCase();
+      document.getElementById("currentAsset").textContent = currentId;
       document.getElementById("assetCountDisplay").textContent = `Asset ${batchIndex + 1} of ${batchAssets.length}`;
     }
 
-    document.getElementById("companySelectSingle").addEventListener("change", e => {
-      document.getElementById("baseUrlSingle").value = e.target.value;
-    });
-
-    document.getElementById("companySelectBatch").addEventListener("change", e => {
-      document.getElementById("baseUrlBatch").value = e.target.value;
-    });
-
-    document.getElementById("modeSelect").dispatchEvent(new Event("change"));
+    // Ensure correct mode shows on initial load
+    modeSelect.dispatchEvent(new Event("change"));
   </script>
 </body>
 </html>
