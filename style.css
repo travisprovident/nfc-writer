@@ -45,6 +45,14 @@ button {
   padding: 0.5rem;
   font-size: 1rem;
   margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+/* 🔧 Normalize widths between dropdowns and text fields */
+input[type="text"],
+select,
+textarea {
+  max-width: 100%;
 }
 
 /* 🔶 Write buttons now use brand orange */
