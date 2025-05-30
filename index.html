@@ -15,6 +15,12 @@
     #status { margin-top: 1rem; font-weight: bold; }
     .mode-section { display: none; margin-top: 1rem; }
     #resetBtn { background-color: #eee; margin-bottom: 1rem; }
+    #assetNavInfo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -68,9 +74,15 @@
     <button id="startBatch">Start Batch Write</button>
 
     <div id="batchControls" style="display:none;">
-      <p><strong>Current Asset:</strong> <span id="currentAsset"></span></p>
+      <div id="assetNavInfo">
+        <p><strong>Current Asset:</strong> <span id="currentAsset"></span></p>
+        <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
+      </div>
       <button id="writeBatch">Write Tag for Current Asset</button>
-      <button id="nextAsset">Next Asset</button>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+        <button id="prevAsset">⬅️ Previous</button>
+        <button id="nextAsset">Next ➡️</button>
+      </div>
     </div>
   </div>
 
@@ -120,11 +132,11 @@
 
       try {
         const ndef = new NDEFReader();
-        await ndef.scan(); // Optional scan to stabilize session
+        await ndef.scan(); // Optional: stabilize the NFC session
         await new Promise(resolve => setTimeout(resolve, 250));
         await ndef.write({ records: [{ recordType: "url", data: url }] });
 
-        await new Promise(r => setTimeout(r, 500)); // Cooldown
+        await new Promise(r => setTimeout(r, 500)); // Cooldown after write
         successSound.play();
         failCount = 0;
         return true;
@@ -202,12 +214,13 @@
       }
     });
 
-
     function updateCurrentAssetDisplay() {
       document.getElementById("currentAsset").textContent = batchAssets[batchIndex];
+      document.getElementById("assetCountDisplay").textContent = `Asset ${batchIndex + 1} of ${batchAssets.length}`;
     }
 
     singleMode.style.display = "block";
   </script>
 </body>
 </html>
+
