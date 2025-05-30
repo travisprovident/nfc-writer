@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NFC Write</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      max-width: 500px;
+      margin: auto;
+    }
+    input, button {
+      margin-top: 0.5rem;
+      display: block;
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    #status {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Write to NFC Tag</h2>
+
+  <label>Base URL (e.g. https://yourdomain.com/asset?id=)</label>
+  <input id="baseUrl" type="text" placeholder="Enter base URL" />
+
+  <label>Asset ID</label>
+  <input id="assetId" type="text" placeholder="Enter asset ID" />
+
+  <button id="startScan">Write to NFC Tag</button>
+
+  <div id="status"></div>
+
+  <!-- Success Ding Sound -->
+  <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-confirmation-tone-2867.mp3" preload="auto"></audio>
+
+  <script>
+    document.getElementById("startScan").addEventListener("click", async () => {
+      const base = document.getElementById("baseUrl").value.trim();
+      const id = document.getElementById("assetId").value.trim();
+      const status = document.getElementById("status");
+
+      if (!base || !id) {
+        status.textContent = "❗ Please enter both Base URL and Asset ID.";
+        return;
+      }
+
+      const fullUrl = `${base}${id}`;
+
+      try {
+        const writer = new NDEFWriter();
+        status.textContent = "📡 Scanning… touch a tag to write.";
+
+        await writer.write({ records: [{ recordType: "url", data: fullUrl }] });
+
+        document.getElementById("successSound").play();
+        status.textContent = `✅ Tag written: ${fullUrl}`;
+        document.getElementById("assetId").value = "";
+      } catch (err) {
+        status.textContent = `❌ Write failed: ${err.message}`;
+        console.error(err);
+      }
+    });
+  </script>
+
+</body>
+</html>
