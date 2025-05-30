@@ -50,13 +50,10 @@
       <option value="https://tinyurl.com/2cpxwvxn?id=">Ensign Asset Tracker</option>
       <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
     </select>
-
     <label>Base URL</label>
     <input id="baseUrlSingle" type="text" placeholder="Enter base URL" />
-
     <label>Asset ID</label>
     <input id="assetIdSingle" type="text" placeholder="Enter asset ID" />
-
     <button id="writeSingle" type="button">Write to NFC Tag</button>
   </div>
 
@@ -70,13 +67,10 @@
       <option value="https://tinyurl.com/2cpxwvxn?id=">Ensign Asset Tracker</option>
       <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
     </select>
-
     <label>Base URL</label>
     <input id="baseUrlBatch" type="text" placeholder="Enter base URL" />
-
     <label>Asset ID List (one per line)</label>
     <textarea id="assetList" rows="5" placeholder="123\n124\n125"></textarea>
-
     <button id="startBatch">Start Batch Write</button>
 
     <div id="batchControls" style="display:none;">
@@ -132,6 +126,7 @@
 
     cancelBtn.onclick = () => {
       localStorage.setItem("restoreState", "true");
+      localStorage.setItem("savedMode", modeSelect.value);
       localStorage.setItem("savedAssetList", document.getElementById("assetList").value);
       localStorage.setItem("savedBaseUrl", document.getElementById("baseUrlBatch").value);
       localStorage.setItem("savedIndex", batchIndex.toString());
@@ -140,13 +135,19 @@
 
     window.addEventListener("DOMContentLoaded", () => {
       if (localStorage.getItem("restoreState") === "true") {
+        const mode = localStorage.getItem("savedMode") || "batch";
         const assetList = localStorage.getItem("savedAssetList");
         const baseUrl = localStorage.getItem("savedBaseUrl");
         const index = parseInt(localStorage.getItem("savedIndex"), 10);
+
+        modeSelect.value = mode;
+        modeSelect.dispatchEvent(new Event("change"));
+
         if (assetList) document.getElementById("assetList").value = assetList;
         if (baseUrl) document.getElementById("baseUrlBatch").value = baseUrl;
         batchAssets = assetList.split("\n").map(x => x.trim().toUpperCase()).filter(Boolean);
         batchIndex = isNaN(index) ? 0 : index;
+
         document.getElementById("batchControls").style.display = "block";
         updateCurrentAssetDisplay();
         localStorage.clear();
@@ -241,6 +242,10 @@
         status.textContent = "⚠️ Already at the first asset.";
       }
     });
+
+    document.addEventListener("click", () => {
+      if (successSound.paused) successSound.play().then(() => successSound.pause()).catch(() => {});
+    }, { once: true });
 
     modeSelect.dispatchEvent(new Event("change"));
   </script>
