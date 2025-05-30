@@ -25,8 +25,12 @@ body {
   color: var(--brand-text-color);
 }
 
+/* Keep labels and inputs grouped and aligned */
 .form-group {
   margin-bottom: 1.25rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 label {
@@ -35,14 +39,11 @@ label {
   font-weight: 500;
 }
 
-/* 🎯 Force same visual width across all form elements */
 input,
 select,
 textarea {
   display: block;
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
   padding: 0.5rem;
   font-size: 1rem;
   box-sizing: border-box;
@@ -54,7 +55,7 @@ textarea {
   background-color: white;
 }
 
-/* 🔶 Write buttons */
+/* Write buttons */
 button.write-button {
   background-color: var(--brand-primary-color);
   color: var(--brand-background-color);
@@ -63,14 +64,13 @@ button.write-button {
   padding: 0.5rem;
   width: 100%;
   max-width: 400px;
-  margin: 0 auto;
 }
 
 button.write-button:hover {
   background-color: var(--brand-primary-hover);
 }
 
-/* 🌀 Reset button */
+/* Reset button */
 .reset-button {
   font-size: 0.85rem;
   background-color: transparent;
@@ -85,7 +85,7 @@ button.write-button:hover {
   text-decoration: underline;
 }
 
-/* ❌ Cancel scan */
+/* Cancel scan */
 .cancel-scan {
   display: none;
   background-color: #fdd;
@@ -94,7 +94,7 @@ button.write-button:hover {
   padding: 0.5rem;
   width: 100%;
   max-width: 400px;
-  margin: 0.5rem auto 0;
+  margin-top: 0.5rem;
   border-radius: 4px;
 }
 
@@ -110,6 +110,7 @@ button.write-button:hover {
   margin-top: 1rem;
 }
 
+/* Logo */
 #logoContainer {
   text-align: center;
   margin-bottom: 1rem;
@@ -120,6 +121,7 @@ button.write-button:hover {
   height: auto;
 }
 
+/* Nav info */
 #assetNavInfo {
   display: flex;
   justify-content: space-between;
