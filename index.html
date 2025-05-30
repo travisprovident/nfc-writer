@@ -165,7 +165,7 @@
 
     document.getElementById("writeSingle").addEventListener("click", async () => {
       const base = document.getElementById("baseUrlSingle").value.trim();
-      const id = document.getElementById("assetIdSingle").value.trim();
+      const id = document.getElementById("assetIdSingle").value.trim().toUpperCase();
       if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
       const fullUrl = `${base}${id}`;
       const scanBtn = document.getElementById("writeSingle");
@@ -177,7 +177,7 @@
     document.getElementById("startBatch").addEventListener("click", () => {
       const list = document.getElementById("assetList").value.trim().split("\n").filter(l => l);
       if (list.length === 0) return status.textContent = "❗ Enter at least one asset ID.";
-      batchAssets = list;
+      batchAssets = list.map(id => id.trim().toUpperCase());
       batchIndex = 0;
       document.getElementById("batchControls").style.display = "block";
       updateCurrentAssetDisplay();
@@ -185,7 +185,7 @@
 
     document.getElementById("writeBatch").addEventListener("click", async () => {
       const base = document.getElementById("baseUrlBatch").value.trim();
-      const id = batchAssets[batchIndex];
+      const id = batchAssets[batchIndex].toUpperCase();
       if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
       const fullUrl = `${base}${id}`;
       const scanBtn = document.getElementById("writeBatch");
@@ -219,8 +219,8 @@
       document.getElementById("assetCountDisplay").textContent = `Asset ${batchIndex + 1} of ${batchAssets.length}`;
     }
 
+    // Ensure correct mode shows on initial load
     modeSelect.dispatchEvent(new Event("change"));
   </script>
 </body>
 </html>
-
