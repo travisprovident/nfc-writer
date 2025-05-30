@@ -65,6 +65,8 @@
     const cancelScanBtn = document.getElementById("cancelScanBtn");
     const status = document.getElementById("status");
     const successSound = document.getElementById("successSound");
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
 
     let batchAssets = [], index = 0;
     let isScanCanceled = false;
@@ -88,26 +90,32 @@
       document.getElementById("assetCountDisplay").textContent = `Asset ${index + 1} of ${batchAssets.length}`;
     }
 
-    document.getElementById("nextBtn").onclick = () => {
+    nextBtn.onclick = () => {
       if (index < batchAssets.length - 1) index++;
       updateDisplay();
       status.textContent = "";
     };
 
-    document.getElementById("prevBtn").onclick = () => {
+    prevBtn.onclick = () => {
       if (index > 0) index--;
       updateDisplay();
       status.textContent = "";
     };
 
-    cancelScanBtn.onclick = () => {
+    cancelScanBtn.onclick = async () => {
       isScanCanceled = true;
       cancelScanBtn.style.display = "none";
+      writeBtn.disabled = true;
+      writeBtn.textContent = "Canceling...";
+      status.textContent = "❌ Scan canceled. Resetting NFC...";
+
+      await new Promise(r => setTimeout(r, 2000)); // Let Chrome reset
+
       writeBtn.disabled = false;
       writeBtn.textContent = "Write Tag";
-      document.getElementById("nextBtn").disabled = false;
-      document.getElementById("prevBtn").disabled = false;
-      status.textContent = "❌ Scan canceled.";
+      nextBtn.disabled = false;
+      prevBtn.disabled = false;
+      status.textContent = "Ready for next scan.";
     };
 
     writeBtn.onclick = async () => {
@@ -119,15 +127,16 @@
       cancelScanBtn.style.display = "inline-block";
       writeBtn.disabled = true;
       writeBtn.textContent = "Scanning...";
-      document.getElementById("nextBtn").disabled = true;
-      document.getElementById("prevBtn").disabled = true;
+      nextBtn.disabled = true;
+      prevBtn.disabled = true;
 
       try {
         const ndef = new NDEFReader();
         await ndef.scan();
         await new Promise(r => setTimeout(r, 250));
+
         if (isScanCanceled) {
-          await new Promise(r => setTimeout(r, 500)); // cooldown
+          await new Promise(r => setTimeout(r, 500)); // short cooldown
           return;
         }
 
@@ -137,7 +146,7 @@
         status.textContent = `✅ Tag written for asset ${assetId}`;
       } catch (err) {
         if (err.message.includes("push is canceled")) {
-          status.textContent = "❌ Scan interrupted. Try again.";
+          status.textContent = "❌ Please wait for scanner to reset before trying again.";
         } else {
           status.textContent = `❌ ${err.message}`;
         }
@@ -145,8 +154,8 @@
         cancelScanBtn.style.display = "none";
         writeBtn.disabled = false;
         writeBtn.textContent = "Write Tag";
-        document.getElementById("nextBtn").disabled = false;
-        document.getElementById("prevBtn").disabled = false;
+        nextBtn.disabled = false;
+        prevBtn.disabled = false;
       }
     };
   </script>
