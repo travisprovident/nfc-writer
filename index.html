@@ -219,7 +219,7 @@
       document.getElementById("assetCountDisplay").textContent = `Asset ${batchIndex + 1} of ${batchAssets.length}`;
     }
 
-    singleMode.style.display = "block";
+    modeSelect.dispatchEvent(new Event("change"));
   </script>
 </body>
 </html>
