@@ -98,8 +98,6 @@
 
     const companySelectSingle = document.getElementById("companySelectSingle");
     const companySelectBatch = document.getElementById("companySelectBatch");
-    const nextAssetBtn = document.getElementById("nextAsset");
-    const prevAssetBtn = document.getElementById("prevAsset");
     let failCount = 0;
 
     companySelectSingle.addEventListener("change", () => {
@@ -129,18 +127,16 @@
 
     async function safeWrite(url, scanBtn) {
       scanBtn.disabled = true;
-      nextAssetBtn.disabled = true;
-      prevAssetBtn.disabled = true;
       scanBtn.textContent = "Scanning...";
       await new Promise(resolve => setTimeout(resolve, 250));
 
       try {
         const ndef = new NDEFReader();
-        await ndef.scan(); // Optional stabilization
+        await ndef.scan(); // Optional: stabilize the NFC session
         await new Promise(resolve => setTimeout(resolve, 250));
         await ndef.write({ records: [{ recordType: "url", data: url }] });
 
-        await new Promise(r => setTimeout(r, 500));
+        await new Promise(r => setTimeout(r, 500)); // Cooldown after write
         successSound.play();
         failCount = 0;
         return true;
@@ -163,8 +159,6 @@
         return false;
       } finally {
         scanBtn.disabled = false;
-        nextAssetBtn.disabled = false;
-        prevAssetBtn.disabled = false;
         scanBtn.textContent = scanBtn.dataset.originalText;
       }
     }
@@ -227,6 +221,7 @@
       document.getElementById("assetCountDisplay").textContent = `Asset ${batchIndex + 1} of ${batchAssets.length}`;
     }
 
+    // Ensure correct mode shows on initial load
     modeSelect.dispatchEvent(new Event("change"));
   </script>
 </body>
