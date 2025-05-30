@@ -37,42 +37,42 @@
 
   <script>
     // 🔓 Unlock audio on any first user interaction
-    document.addEventListener("click", () => {
-      const audio = document.getElementById("successSound");
-      if (audio.paused) {
-        audio.play().then(() => audio.pause()).catch(() => {});
-      }
-    }, { once: true });
-
-    document.getElementById("startScan").addEventListener("click", async () => {
-      const base = document.getElementById("baseUrl").value.trim();
-      const id = document.getElementById("assetId").value.trim();
-      const status = document.getElementById("status");
-
-      if (!base || !id) {
-        status.textContent = "❗ Please enter both Base URL and Asset ID.";
-        return;
-      }
-
-      const fullUrl = `${base}${id}`;
-      const ndef = new NDEFReader();
-
-      try {
-        status.textContent = "📡 Scanning… touch a tag to write.";
-
-        await ndef.write({
-          records: [{ recordType: "url", data: fullUrl }]
-        });
-
-        // ✅ Only plays on confirmed successful write
-        document.getElementById("successSound").play();
-        status.textContent = `✅ Tag written successfully: ${fullUrl}`;
-        // Leave asset ID populated for second tag write if needed
-      } catch (err) {
-        status.textContent = `❌ Write failed: ${err.message}`;
-        console.error(err);
-      }
-    });
+  document.getElementById("startScan").addEventListener("click", async () => {
+    const base = document.getElementById("baseUrl").value.trim();
+    const id = document.getElementById("assetId").value.trim();
+    const status = document.getElementById("status");
+    const scanButton = document.getElementById("startScan");
+  
+    if (!base || !id) {
+      status.textContent = "❗ Please enter both Base URL and Asset ID.";
+      return;
+    }
+  
+    const fullUrl = `${base}${id}`;
+    const ndef = new NDEFReader();
+  
+    try {
+      // 🔄 Update button label to scanning state
+      scanButton.disabled = true;
+      scanButton.textContent = "Scanning...";
+  
+      status.textContent = "📡 Scanning… touch a tag to write.";
+  
+      await ndef.write({
+        records: [{ recordType: "url", data: fullUrl }]
+      });
+  
+      document.getElementById("successSound").play();
+      status.textContent = `✅ Tag written successfully: ${fullUrl}`;
+    } catch (err) {
+      status.textContent = `❌ Write failed: ${err.message}`;
+      console.error(err);
+    } finally {
+      // 🔁 Revert button back to normal
+      scanButton.disabled = false;
+      scanButton.textContent = "Write to NFC Tag";
+    }
+  });
   </script>
 
 </body>
