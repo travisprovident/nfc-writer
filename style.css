@@ -25,17 +25,26 @@ body {
   color: var(--brand-text-color);
 }
 
-/* ✅ Apply consistent spacing */
-label,
+/* Form structure spacing */
+.form-group {
+  margin-bottom: 1.25rem; /* More space between sections */
+}
+
+label {
+  margin-bottom: 0.25rem;  /* Tighten label to input */
+  display: block;
+  font-weight: 500;
+}
+
 input,
 select,
 textarea,
 button {
-  margin-top: 1rem;
   display: block;
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
+  margin-bottom: 0; /* Remove extra space between inputs */
 }
 
 /* 🔶 Write buttons now use brand orange */
@@ -64,7 +73,7 @@ button.write-button:hover {
   text-decoration: underline;
 }
 
-/* ❌ Cancel button keeps previous style */
+/* ❌ Cancel button style */
 .cancel-scan {
   display: none;
   background-color: #fdd;
@@ -101,5 +110,5 @@ button.write-button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0.1rem;
+  margin-top: 0.5rem;
 }
