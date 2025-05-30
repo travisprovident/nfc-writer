@@ -45,8 +45,10 @@
       <input id="assetIdSingle" type="text" placeholder="Enter asset ID" />
     </div>
 
-    <button id="writeSingle" type="button" class="write-button">Write to NFC Tag</button>
-    <button id="cancelScanSingle" class="cancel-scan">❌ Cancel Scan</button>
+    <div class="form-group">
+      <button id="writeSingle" type="button" class="write-button">Write to NFC Tag</button>
+      <button id="cancelScanSingle" class="cancel-scan">❌ Cancel Scan</button>
+    </div>
   </div>
 
   <div id="batchMode" class="mode-section">
@@ -72,16 +74,20 @@
       <textarea id="assetList" rows="5" placeholder="123\n124\n125"></textarea>
     </div>
 
-    <button id="startBatch">Start Batch Write</button>
+    <div class="form-group">
+      <button id="startBatch">Start Batch Write</button>
+    </div>
 
     <div id="batchControls" style="display:none;">
       <div id="assetNavInfo">
         <p><strong>Current Asset:</strong> <span id="currentAsset"></span></p>
         <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
       </div>
-      <button id="writeBatch" class="write-button">Write Tag for Current Asset</button>
-      <button id="cancelScanBatch" class="cancel-scan">❌ Cancel Scan</button>
-      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+      <div class="form-group">
+        <button id="writeBatch" class="write-button">Write Tag for Current Asset</button>
+        <button id="cancelScanBatch" class="cancel-scan">❌ Cancel Scan</button>
+      </div>
+      <div class="form-group" style="display: flex; gap: 0.5rem;">
         <button id="prevAsset">⬅️ Previous</button>
         <button id="nextAsset">Next ➡️</button>
       </div>
