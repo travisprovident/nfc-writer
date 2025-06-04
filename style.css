@@ -4,7 +4,8 @@
   --brand-highlight-color: #F26722;
   --brand-highlight-hover: #d54f0d;
   --brand-primary-color: #F26722;
-  --brand-secondary-color: #787878;
+  --brand-button-blue: #007bff;
+  --brand-button-blue-hover: #0056b3;
 }
 
 body {
@@ -16,7 +17,6 @@ body {
   color: var(--brand-text-color);
 }
 
-/* Container that keeps all form content aligned */
 #nfcWrapper {
   max-width: 400px;
   margin: 0 auto;
@@ -32,7 +32,6 @@ body {
   height: auto;
 }
 
-/* Form styling */
 .form-group {
   margin-bottom: 1.25rem;
 }
@@ -58,18 +57,67 @@ textarea {
   appearance: none;
 }
 
-/* Buttons */
 button.write-button {
   background-color: var(--brand-primary-color);
   color: white;
   font-weight: bold;
   border: none;
-  padding: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
   width: 100%;
+  max-width: 100%;
+  letter-spacing: 0.5px;
 }
 
 button.write-button:hover {
   background-color: var(--brand-highlight-hover);
+}
+
+button.start-batch-button {
+  background-color: var(--brand-button-blue);
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 1.25rem;
+  font-size: 1.15rem;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
+  display: block;
+  cursor: pointer;
+}
+
+button.start-batch-button:hover {
+  background-color: var(--brand-button-blue-hover);
+}
+
+.asset-nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#prevAsset,
+#nextAsset {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  border: 1px solid black;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 140px;
+  margin: 0 auto;
+  display: block;
+  transition: background-color 0.2s ease;
+}
+
+#prevAsset:hover,
+#nextAsset:hover {
+  background-color: #f0f0f0;
 }
 
 .reset-button {
@@ -89,7 +137,6 @@ button.write-button:hover {
   text-decoration: underline;
 }
 
-/* Cancel scan */
 .cancel-scan {
   display: none;
   background-color: #fdd;
@@ -101,7 +148,6 @@ button.write-button:hover {
   border-radius: 4px;
 }
 
-/* Miscellaneous */
 #status {
   margin-top: 1rem;
   font-weight: bold;
