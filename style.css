@@ -80,8 +80,8 @@ button.write-button:hover {
   cursor: pointer;
   padding: 0.25rem 0.5rem;
   text-align: left;
-  margin-left: 7rem;
-  margin-top: 12rem;
+  margin-left: 6.5rem;
+  margin-top: 10rem;
 }
 
 .reset-button:hover {
