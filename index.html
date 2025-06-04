@@ -12,22 +12,21 @@
     <img src="Provident_HeaderLogo_520_Over.webp" alt="Company Logo" id="logoImage" />
   </div>
 
-  <h2>NFC Tag Writer</h2>
+  <!-- Form Wrapper for consistent layout -->
+  <div id="nfcWrapper">
+    <h2>NFC Tag Writer</h2>
 
-  <div class="form-group">
-    <label for="modeSelect">Choose Mode:</label>
-    <div class="form-control">
+    <div class="form-group">
+      <label for="modeSelect">Choose Mode:</label>
       <select id="modeSelect">
         <option value="single">Single Asset</option>
         <option value="batch">Batch Write</option>
       </select>
     </div>
-  </div>
 
-  <div id="singleMode" class="mode-section">
-    <div class="form-group">
-      <label for="companySelectSingle">Choose Company:</label>
-      <div class="form-control">
+    <div id="singleMode" class="mode-section">
+      <div class="form-group">
+        <label for="companySelectSingle">Choose Company:</label>
         <select id="companySelectSingle">
           <option value="">-- Select Company --</option>
           <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
@@ -37,32 +36,26 @@
           <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
         </select>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="baseUrlSingle">Base URL</label>
-      <div class="form-control">
+      <div class="form-group">
+        <label for="baseUrlSingle">Base URL</label>
         <input id="baseUrlSingle" type="text" placeholder="Enter base URL" />
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="assetIdSingle">Asset ID</label>
-      <div class="form-control">
+      <div class="form-group">
+        <label for="assetIdSingle">Asset ID</label>
         <input id="assetIdSingle" type="text" placeholder="Enter asset ID" />
+      </div>
+
+      <div class="form-group">
+        <button id="writeSingle" type="button" class="write-button">Write to NFC Tag</button>
+        <button id="cancelScanSingle" class="cancel-scan">❌ Cancel Scan</button>
       </div>
     </div>
 
-    <div class="form-group">
-      <button id="writeSingle" type="button" class="write-button">Write to NFC Tag</button>
-      <button id="cancelScanSingle" class="cancel-scan">❌ Cancel Scan</button>
-    </div>
-  </div>
-
-  <div id="batchMode" class="mode-section">
-    <div class="form-group">
-      <label for="companySelectBatch">Choose Company:</label>
-      <div class="form-control">
+    <div id="batchMode" class="mode-section">
+      <div class="form-group">
+        <label for="companySelectBatch">Choose Company:</label>
         <select id="companySelectBatch">
           <option value="">-- Select Company --</option>
           <option value="https://tinyurl.com/yr4c8nfc?id=">Provident Asset Tracker</option>
@@ -72,51 +65,48 @@
           <option value="https://tinyurl.com/4c9r7ybn?id=">Other Asset Tracker</option>
         </select>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="baseUrlBatch">Base URL</label>
-      <div class="form-control">
+      <div class="form-group">
+        <label for="baseUrlBatch">Base URL</label>
         <input id="baseUrlBatch" type="text" placeholder="Enter base URL" />
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="assetList">Asset ID List (one per line)</label>
-      <div class="form-control">
+      <div class="form-group">
+        <label for="assetList">Asset ID List (one per line)</label>
         <textarea id="assetList" rows="5" placeholder="123\n124\n125"></textarea>
       </div>
-    </div>
 
-    <div class="form-group">
-      <button id="startBatch">Start Batch Write</button>
-    </div>
-
-    <div id="batchControls" style="display:none;">
-      <div id="assetNavInfo">
-        <p><strong>Current Asset:</strong> <span id="currentAsset"></span></p>
-        <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
-      </div>
       <div class="form-group">
-        <button id="writeBatch" class="write-button">Write Tag for Current Asset</button>
-        <button id="cancelScanBatch" class="cancel-scan">❌ Cancel Scan</button>
+        <button id="startBatch">Start Batch Write</button>
       </div>
-      <div class="form-group" style="display: flex; gap: 0.5rem;">
-        <button id="prevAsset">⬅️ Previous</button>
-        <button id="nextAsset">Next ➡️</button>
+
+      <div id="batchControls" style="display:none;">
+        <div id="assetNavInfo">
+          <p><strong>Current Asset:</strong> <span id="currentAsset"></span></p>
+          <p id="assetCountDisplay" style="font-size: 0.9rem; color: #555;"></p>
+        </div>
+        <div class="form-group">
+          <button id="writeBatch" class="write-button">Write Tag for Current Asset</button>
+          <button id="cancelScanBatch" class="cancel-scan">❌ Cancel Scan</button>
+        </div>
+        <div class="form-group" style="display: flex; gap: 0.5rem;">
+          <button id="prevAsset">⬅️ Previous</button>
+          <button id="nextAsset">Next ➡️</button>
+        </div>
       </div>
+    </div>
+
+    <div id="status"></div>
+
+    <!-- Aligned Reset Button -->
+    <div class="form-group">
+      <button id="resetBtn" type="button" class="reset-button">🔄 Reset NFC Session</button>
     </div>
   </div>
 
-  <div id="status"></div>
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
 
-  <!-- Reset Button at Bottom -->
-  <div style="text-align: right; margin-top: 2rem;">
-    <button id="resetBtn" type="button" class="reset-button">🔄 Reset NFC Session</button>
-  </div>
-
-  <!-- Script Files -->
+  <!-- Scripts -->
   <script src="script/state.js"></script>
   <script src="script/write.js"></script>
   <script src="script/main.js"></script>
