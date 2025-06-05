@@ -159,11 +159,11 @@ button.start-batch-button:hover {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto 1.5rem auto;
-  padding: 0 16px;
-  gap: 32px; /* 🔒 this guarantees min spacing between icon and logo */
+  max-width: 600px;       /* same as body */
+  margin: 0 auto 1.5rem;  /* center it just like body */
+  padding: 0 1rem;        /* same side padding as body */
+  gap: 32px;              /* keep your locked spacing */
+  box-sizing: border-box;
 }
 
 #logoSlot {
