@@ -8,12 +8,15 @@
   --brand-button-blue-hover: #0056b3;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: sans-serif;
-  padding: 2rem;
+  padding: 2rem 1rem;
   max-width: 600px;
   margin: 0 auto;
-  box-sizing: border-box;
   background: var(--brand-background-color);
   color: var(--brand-text-color);
 }
@@ -46,7 +49,6 @@ textarea {
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
-  box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: white;
@@ -153,24 +155,24 @@ button.start-batch-button:hover {
   margin-top: 0.5rem;
 }
 
+/* 🔄 Top nav bar setup with centered logo and side icons */
 #topNavBar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 1rem 0.5rem;
   max-width: 600px;
-  margin: 0 auto 1rem auto;
-  box-sizing: border-box;
+  margin: 0 auto 1.5rem auto;
+  position: relative;
 }
 
 #logoImage {
   height: 50px;
   max-width: 200px;
   object-fit: contain;
-  margin-left: 2rem;
-  margin-right: 2rem;
 }
 
+/* Position nav icons absolutely to prevent crowding */
 .nav-icon-button {
   background: none;
   border: none;
@@ -178,9 +180,9 @@ button.start-batch-button:hover {
   font-weight: bold;
   cursor: pointer;
   padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--brand-text-color);
   transition: color 0.2s ease;
 }
@@ -189,9 +191,16 @@ button.start-batch-button:hover {
   color: var(--brand-highlight-color);
 }
 
+.nav-icon-button.left {
+  left: 2rem;
+}
+
+.nav-icon-button.right {
+  right: 2rem;
+}
+
 h2 {
   text-align: center;
   font-size: 1.6rem;
   margin-bottom: 1.5rem;
 }
-
