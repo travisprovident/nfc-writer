@@ -130,8 +130,8 @@ button.start-batch-button:hover {
 
 .reset-button,
 .go-back-button {
-  font-size: 0.75rem;
-  height: 48px;
+  font-size: 0.80rem;
+  height: 40px;
   background-color: var(--brand-button-blue);
   color: white;
   border: none;
