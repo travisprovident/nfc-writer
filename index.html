@@ -13,7 +13,6 @@
     <img src="Provident_HeaderLogo_520_Over.webp" alt="Company Logo" id="logoImage" />
   </div>
 
-  <!-- Form Wrapper for consistent layout -->
   <div id="nfcWrapper">
     <h2>NFC Tag Writer</h2>
 
@@ -99,12 +98,17 @@
 
     <div id="status"></div>
 
-    <div class="form-group">
+    <div class="form-group reset-nav-group">
       <button id="resetBtn" type="button" class="reset-button">🔄 Reset NFC Session</button>
+      <button id="goBackBtn" type="button" class="go-back-button">⬅️ Return to Previous Page</button>
     </div>
   </div>
 
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
+
+  <script>
+    document.getElementById("goBackBtn").addEventListener("click", () => history.back());
+  </script>
 
   <script src="script/state.js"></script>
   <script src="script/write.js"></script>

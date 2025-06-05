@@ -120,6 +120,14 @@ button.start-batch-button:hover {
   background-color: #f0f0f0;
 }
 
+.reset-nav-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
 .reset-button {
   font-size: 0.85rem;
   background-color: transparent;
@@ -128,11 +136,23 @@ button.start-batch-button:hover {
   cursor: pointer;
   padding: 0.25rem 0.5rem;
   text-align: left;
-  margin-left: 6.15rem;
-  margin-top: 8rem;
 }
 
 .reset-button:hover {
+  color: var(--brand-text-color);
+  text-decoration: underline;
+}
+
+.go-back-button {
+  font-size: 0.85rem;
+  background-color: transparent;
+  color: var(--brand-secondary-color);
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+
+.go-back-button:hover {
   color: var(--brand-text-color);
   text-decoration: underline;
 }
