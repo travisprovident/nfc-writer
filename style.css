@@ -199,6 +199,12 @@ button.start-batch-button:hover {
   right: 2rem;
 }
 
+/* Spacer reserves physical space in layout to balance logo */
+.nav-spacer {
+  width: 44px; /* Match button size to keep layout centered */
+  flex-shrink: 0;
+}
+
 h2 {
   text-align: center;
   font-size: 1.6rem;
