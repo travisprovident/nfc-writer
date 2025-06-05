@@ -115,6 +115,13 @@
       });
   </script>
 
+  <script>
+  const assetList = document.getElementById('assetList');
+  assetList.addEventListener('focus', function () {
+    this.placeholder = '';
+  }, { once: true }); // Only run the first time it's focused
+  </script>
+
   <script src="script/state.js"></script>
   <script src="script/write.js"></script>
   <script src="script/main.js"></script>

@@ -147,6 +147,7 @@ button.start-batch-button:hover {
   align-items: center;
   white-space: normal; 
   line-height: 1.4;
+  margin-top: 12rem;
 }
 
 .reset-button:hover,
