@@ -128,7 +128,8 @@ button.start-batch-button:hover {
   margin-top: 2rem;
 }
 
-.reset-button {
+#reset-button,
+#go-back-button {
   font-size: 0.75rem;
   background-color: var(--brand-button-blue);
   color: white;
@@ -138,23 +139,13 @@ button.start-batch-button:hover {
   border-radius: 4px;
   display: block;
   font-weight: bold;
+  flex: 1;
+  max-width: 180px;
 }
 
 .reset-button:hover {
   color: var(--brand-text-color);
   text-decoration: underline;
-}
-
-.go-back-button {
-  font-size: 0.75rem;
-  background-color: var(--brand-button-blue);
-  color: white;
-  border: none;
-  cursor: pointer;
-  padding: 0.75rem 0.5rem;
-  border-radius: 4px;
-  display: block;
-  font-weight: bold;
 }
 
 .go-back-button:hover {
