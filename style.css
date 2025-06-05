@@ -156,13 +156,18 @@ button.start-batch-button:hover {
 }
 
 #topNavBar {
-  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
   width: 100%;
   max-width: 600px;
   margin: 0 auto 1.5rem auto;
-  height: 60px; /* Fixed height for clean centering */
+  padding: 0 16px;
+  gap: 32px; /* 🔒 this guarantees min spacing between icon and logo */
+}
+
+#logoSlot {
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -170,36 +175,21 @@ button.start-batch-button:hover {
   height: 50px;
   max-width: 180px;
   object-fit: contain;
-  z-index: 1;
 }
 
-/* Icon styles */
 .nav-icon-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   font-size: 2.2rem;
   background: none;
   border: none;
-  color: var(--brand-text-color);
+  color: #333;
   cursor: pointer;
-  padding: 0.5rem;
-  z-index: 2;
+  padding: 0.25rem;
+  transition: color 0.2s ease;
 }
 
 .nav-icon-button:hover {
-  color: var(--brand-highlight-color);
+  color: #F26722;
 }
-
-/* Manual placement — adjust these until it feels perfect */
-.nav-icon-button.left {
-  left: 16px;
-}
-
-.nav-icon-button.right {
-  right: 16px;
-}
-
 
 h2 {
   text-align: center;
