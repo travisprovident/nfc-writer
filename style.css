@@ -157,11 +157,11 @@ button.start-batch-button:hover {
 
 #topNavBar {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 48px 1fr 48px;
   align-items: center;
   max-width: 600px;
   margin: 0 auto;
-  gap: 32px;              /* keep your locked spacing */
+  gap: 15px;
   box-sizing: border-box;
 }
 
