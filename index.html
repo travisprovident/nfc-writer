@@ -107,14 +107,18 @@
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
 
   <script>
-    const params = new URLSeachParams(window.location.search)
-    const returnURl = params.get("returnUrl");
+    const params = new URLSearchParams(window.location.search);
+    const returnUrl = params.get("returnUrl");
 
     const returnBtn = document.getElementById("goBackBtn");
-    if (returnURl) {
-      returnBtn.addEventListener("click", () => window.location.href = returnURl);
+    if (returnUrl) {
+      returnBtn.addEventListener("click", () => {
+        window.location.href = returnUrl;
+      });
     } else {
-      returnBtn.addEventListener("click", () => window.history.back());
+      returnBtn.addEventListener("click", () => {
+        window.history.back();
+      });
     }
   </script>
 
