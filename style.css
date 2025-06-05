@@ -10,9 +10,10 @@
 
 body {
   font-family: sans-serif;
-  padding: 2rem;
+  padding: 2rem 1rem;
   max-width: 600px;
-  margin: auto;
+  margin: 0 auto;
+  box-sizing: border-box;
   background: var(--brand-background-color);
   color: var(--brand-text-color);
 }
@@ -154,12 +155,12 @@ button.start-batch-button:hover {
 
 #topNavBar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 0.75rem;
+  justify-content: space-between;
+  padding: 1rem 0.5rem;
   max-width: 600px;
-  margin: 0 auto 1.5rem auto;
-  border-bottom: 1px solid #eee;
+  margin: 0 auto 1rem auto;
+  box-sizing: border-box;
 }
 
 #logoImage {
