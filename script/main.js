@@ -57,12 +57,19 @@ document.getElementById("startBatch").addEventListener("click", () => {
 document.getElementById("writeBatch").addEventListener("click", async () => {
   const base = document.getElementById("baseUrlBatch").value.trim();
   const id = window.batchAssets[window.batchIndex];
-  if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
+  if (!base || !id) {
+    status.textContent = "❗ Missing base URL or asset ID.";
+    return;
+  }
+
   const fullUrl = `${base}${id}`;
   const scanBtn = document.getElementById("writeBatch");
   scanBtn.dataset.originalText = "Write Tag for Current Asset";
+
   const success = await safeWrite(fullUrl, scanBtn, "batch");
-  if (success) status.textContent = `✅ Tag written for asset ${id}`;
+  if (success) {
+    status.innerHTML = `✅ Tag written for asset ${id}: <a href="${fullUrl}" target="_blank">${fullUrl}</a>`;
+  }
 });
 
 document.getElementById("nextAsset").addEventListener("click", () => {
