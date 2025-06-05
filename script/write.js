@@ -29,6 +29,7 @@ async function safeWrite(url, scanBtn, mode) {
     await new Promise(r => setTimeout(r, 500));
     successSound.play();
     window.failCount = 0;
+    status.scrollIntoView({ behavior: "smooth", block: "end" });
     return true;
   } catch (err) {
     console.error("Write failed:", err);
