@@ -154,30 +154,36 @@ button.start-batch-button:hover {
 
 #topNavBar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 0.75rem;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.5rem;
   max-width: 600px;
-  margin: 0 auto 1.5rem auto;
+  margin: 0 auto 1rem auto;
   border-bottom: 1px solid #eee;
 }
 
-#logoImage {
-  height: 50px;
-  max-width: 200px;
-  object-fit: contain;
+.nav-side {
+  min-width: 48px;      /* reserves space for icons */
+  padding: 0 12px;       /* extra breathing room from center */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 8px; /* buffer to ensure logo doesn't touch sides */
 }
 
 .nav-icon-button {
   background: none;
   border: none;
-  font-size: 2.2rem;
-  font-weight: bold;
+  font-size: 1.75rem;
   cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0.25rem;
   color: var(--brand-text-color);
   transition: color 0.2s ease;
 }
@@ -185,6 +191,13 @@ button.start-batch-button:hover {
 .nav-icon-button:hover {
   color: var(--brand-highlight-color);
 }
+
+#logoImage {
+  height: 48px;
+  max-width: 180px;
+  object-fit: contain;
+}
+
 
 h2 {
   text-align: center;
