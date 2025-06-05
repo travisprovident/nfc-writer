@@ -159,9 +159,8 @@ button.start-batch-button:hover {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  max-width: 600px;       /* same as body */
-  margin: 0 auto 1.5rem;  /* center it just like body */
-  padding: 0 1rem;        /* same side padding as body */
+  max-width: 600px;
+  margin: 0 auto;
   gap: 32px;              /* keep your locked spacing */
   box-sizing: border-box;
 }
