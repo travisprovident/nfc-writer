@@ -14,7 +14,7 @@
 
 body {
   font-family: sans-serif;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
   max-width: 600px;
   margin: 0 auto;
   background: var(--brand-background-color);
@@ -187,10 +187,16 @@ button.start-batch-button:hover {
   cursor: pointer;
   padding: 0.25rem;
   transition: color 0.2s ease;
+  outline: none;
 }
 
 .nav-icon-button:hover {
   color: #F26722;
+}
+
+.nav-icon-button:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 h2 {
