@@ -7,11 +7,15 @@ async function safeWrite(url, scanBtn, mode) {
   const cancelScanSingle = document.getElementById("cancelScanSingle");
   const cancelScanBatch = document.getElementById("cancelScanBatch");
 
+  const batchNav = document.getElementById("batchNavControls");
+
   scanBtn.disabled = true;
+
   if (mode === "batch") {
     nextAssetBtn.disabled = true;
     prevAssetBtn.disabled = true;
     cancelScanBatch.style.display = "inline-block";
+    if (batchNav) batchNav.style.display = "none";
   } else {
     cancelScanSingle.style.display = "inline-block";
   }
@@ -41,5 +45,9 @@ async function safeWrite(url, scanBtn, mode) {
     cancelScanBatch.style.display = "none";
     nextAssetBtn.disabled = false;
     prevAssetBtn.disabled = false;
+
+    if (mode === "batch" && batchNav) {
+      batchNav.style.display = "flex"; // ✅ SHOW nav buttons again
+    }
   }
 }
