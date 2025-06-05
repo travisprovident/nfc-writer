@@ -53,6 +53,7 @@ document.getElementById("startBatch").addEventListener("click", () => {
   window.batchIndex = 0;
   document.getElementById("batchControls").style.display = "block";
   updateCurrentAssetDisplay();
+  status.scrollIntoView({ behavior: "smooth", block: "end" });
 });
 
 document.getElementById("writeBatch").addEventListener("click", async () => {
