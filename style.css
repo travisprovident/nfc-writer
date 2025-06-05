@@ -166,6 +166,8 @@ button.start-batch-button:hover {
   height: 50px;
   max-width: 200px;
   object-fit: contain;
+  margin-left: 2rem;
+  margin-right: 2rem;
 }
 
 .nav-icon-button {
