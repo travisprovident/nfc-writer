@@ -107,7 +107,15 @@
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
 
   <script>
-    document.getElementById("goBackBtn").addEventListener("click", () => history.back());
+    const params = new URLSeachParams(window.location.search)
+    const returnURl = params.get("returnUrl");
+
+    const returnBtn = document.getElementById("goBackBtn");
+    if (returnURl) {
+      returnBtn.addEventListener("click", () => window.location.href = returnURl);
+    } else {
+      returnBtn.addEventListener("click", () => window.history.back());
+    }
   </script>
 
   <script src="script/state.js"></script>
