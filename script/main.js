@@ -66,15 +66,11 @@ document.getElementById("writeBatch").addEventListener("click", async () => {
   const scanBtn = document.getElementById("writeBatch");
   scanBtn.dataset.originalText = "Write Tag for Current Asset";
 
-  document.getElementById("batchNavControls").style.display = "none";
   const success = await safeWrite(fullUrl, scanBtn, "batch");
-  document.getElementById("batchNavControls").style.display = "flex";
-
   if (success) {
     status.innerHTML = `✅ Tag written for asset ${id}: <a href="${fullUrl}" target="_blank">${fullUrl}</a>`;
   }
 });
-
 
 document.getElementById("nextAsset").addEventListener("click", () => {
   if (window.batchIndex + 1 < window.batchAssets.length) {
