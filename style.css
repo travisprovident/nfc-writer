@@ -163,6 +163,9 @@ button.start-batch-button:hover {
   margin: 0 auto;
   gap: 15px;
   box-sizing: border-box;
+
+  border-bottom: 1px solid #e0dada;
+  padding-bottom: 0.5rem;
 }
 
 #logoSlot {
