@@ -107,19 +107,14 @@
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const returnUrl = params.get("returnUrl");
-
     const returnBtn = document.getElementById("goBackBtn");
-    if (returnUrl) {
       returnBtn.addEventListener("click", () => {
-        window.location.href = returnUrl;
+        if (window.opener) {
+          window.close();
+        } else {
+          window.location.href = "https://script.google.com/a/providentinspection.com/macros/s/AKfycbxsOlusze_S7gE2F7lmVSLl2MqG8kZCX8BPGwNyg3Q/dev?page=asset-add/serviceable";
+        }
       });
-    } else {
-      returnBtn.addEventListener("click", () => {
-        window.history.back();
-      });
-    }
   </script>
 
   <script src="script/state.js"></script>
