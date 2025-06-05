@@ -149,14 +149,9 @@ button.start-batch-button:hover {
   line-height: 1.4;
 }
 
-.reset-button:hover {
-  color: var(--brand-text-color);
-  text-decoration: underline;
-}
-
+.reset-button:hover,
 .go-back-button:hover {
-  color: var(--brand-text-color);
-  text-decoration: underline;
+  background-color: var(--brand-highlight-hover);
 }
 
 .cancel-scan {
