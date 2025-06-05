@@ -130,12 +130,15 @@ button.start-batch-button:hover {
 
 .reset-button {
   font-size: 0.85rem;
-  background-color: transparent;
-  color: var(--brand-secondary-color);
+  background-color: var(--brand-button-blue);
+  color: white;
   border: none;
   cursor: pointer;
   padding: 0.25rem 0.5rem;
   text-align: left;
+  border-radius: 4px;
+  display: block;
+  font-weight: bold;
 }
 
 .reset-button:hover {
@@ -145,11 +148,14 @@ button.start-batch-button:hover {
 
 .go-back-button {
   font-size: 0.85rem;
-  background-color: transparent;
-  color: var(--brand-secondary-color);
+  background-color: var(--brand-button-blue);
+  color: white;
   border: none;
   cursor: pointer;
   padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  display: block;
+  font-weight: bold;
 }
 
 .go-back-button:hover {
