@@ -34,11 +34,15 @@ document.getElementById("writeSingle").addEventListener("click", async () => {
   const base = document.getElementById("baseUrlSingle").value.trim();
   const id = document.getElementById("assetIdSingle").value.trim().toUpperCase();
   if (!base || !id) return status.textContent = "❗ Missing base URL or asset ID.";
+  
   const fullUrl = `${base}${id}`;
   const scanBtn = document.getElementById("writeSingle");
   scanBtn.dataset.originalText = "Write to NFC Tag";
+
   const success = await safeWrite(fullUrl, scanBtn, "single");
-  if (success) status.textContent = `✅ Tag written: ${base}${id}`;
+  if (success) {
+    status.innerHTML = `✅ Tag written: <a href="${fullUrl}" target="_blank">${fullUrl}</a>`;
+  }
 });
 
 document.getElementById("startBatch").addEventListener("click", () => {
