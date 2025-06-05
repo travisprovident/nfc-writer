@@ -42,6 +42,7 @@ document.getElementById("writeSingle").addEventListener("click", async () => {
   const success = await safeWrite(fullUrl, scanBtn, "single");
   if (success) {
     status.innerHTML = `✅ Tag written: <a href="${fullUrl}" target="_blank">${fullUrl}</a>`;
+    status.scrollIntoView({ behavior: "smooth", block: "end" });
   }
 });
 
@@ -69,6 +70,7 @@ document.getElementById("writeBatch").addEventListener("click", async () => {
   const success = await safeWrite(fullUrl, scanBtn, "batch");
   if (success) {
     status.innerHTML = `✅ Tag written for asset ${id}: <a href="${fullUrl}" target="_blank">${fullUrl}</a>`;
+    status.scrollIntoView({ behavior: "smooth", block: "end" });
   }
 });
 
