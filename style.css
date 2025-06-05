@@ -155,55 +155,51 @@ button.start-batch-button:hover {
   margin-top: 0.5rem;
 }
 
-/* 🔄 Top nav bar setup with centered logo and side icons */
 #topNavBar {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+  height: 60px; /* Fixed height for clean centering */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0.5rem;
-  max-width: 600px;
-  margin: 0 auto 1.5rem auto;
-  position: relative;
 }
 
 #logoImage {
   height: 50px;
-  max-width: 200px;
+  max-width: 180px;
   object-fit: contain;
+  z-index: 1;
 }
 
-/* Position nav icons absolutely to prevent crowding */
+/* Icon styles */
 .nav-icon-button {
-  background: none;
-  border: none;
-  font-size: 2.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 0.5rem;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  font-size: 2.2rem;
+  background: none;
+  border: none;
   color: var(--brand-text-color);
-  transition: color 0.2s ease;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 2;
 }
 
 .nav-icon-button:hover {
   color: var(--brand-highlight-color);
 }
 
+/* Manual placement — adjust these until it feels perfect */
 .nav-icon-button.left {
-  left: 2rem;
+  left: 16px;
 }
 
 .nav-icon-button.right {
-  right: 2rem;
+  right: 16px;
 }
 
-/* Spacer reserves physical space in layout to balance logo */
-.nav-spacer {
-  width: 44px; /* Match button size to keep layout centered */
-  flex-shrink: 0;
-}
 
 h2 {
   text-align: center;
