@@ -132,14 +132,14 @@ button.start-batch-button:hover {
 .go-back-button {
   flex: 1;
   max-width: 180px;
-  height: 46px; /* allow taller buttons if needed */
+  height: 44px; /* allow taller buttons if needed */
   background-color: var(--brand-button-blue);
   color: white;
   font-weight: bold;
   border: none;
   border-radius: 6px;
-  font-size: 0.76rem;
-  padding: 0.5rem 1rem;
+  font-size: 0.8em;
+  padding: 0.45rem 1rem;
   text-align: center;
   cursor: pointer;
   display: flex;
