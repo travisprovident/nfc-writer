@@ -27,11 +27,6 @@ body {
   margin-bottom: 1rem;
 }
 
-#logoImage {
-  max-width: 180px;
-  height: auto;
-}
-
 .form-group {
   margin-bottom: 1.25rem;
 }
@@ -128,33 +123,6 @@ button.start-batch-button:hover {
   margin-top: 2rem;
 }
 
-.reset-button,
-.go-back-button {
-  flex: 1;
-  max-width: 180px;
-  height: 44px; /* allow taller buttons if needed */
-  background-color: var(--brand-button-blue);
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.8em;
-  padding: 0.45rem 1rem;
-  text-align: center;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  white-space: normal; 
-  line-height: 1.4;
-  margin-top: 12rem;
-}
-
-.reset-button:hover,
-.go-back-button:hover {
-  background-color: var(--brand-highlight-hover);
-}
-
 .cancel-scan {
   display: none;
   background-color: #fdd;
@@ -183,3 +151,44 @@ button.start-batch-button:hover {
   align-items: center;
   margin-top: 0.5rem;
 }
+
+#topNavBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0.75rem;
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+  border-bottom: 1px solid #eee;
+}
+
+#logoImage {
+  height: 50px;
+  max-width: 200px;
+  object-fit: contain;
+}
+
+.nav-icon-button {
+  background: none;
+  border: none;
+  font-size: 2.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-text-color);
+  transition: color 0.2s ease;
+}
+
+.nav-icon-button:hover {
+  color: var(--brand-highlight-color);
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+}
+

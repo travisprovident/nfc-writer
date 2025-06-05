@@ -8,9 +8,11 @@
 </head>
 <body>
 
-  <!-- Company Logo -->
-  <div id="logoContainer">
+  <!-- Top Navigation with Back and Reset Icons -->
+  <div id="topNavBar">
+    <button id="goBackBtn" class="nav-icon-button" title="Return to Tracker">←</button>
     <img src="Provident_HeaderLogo_520_Over.webp" alt="Company Logo" id="logoImage" />
+    <button id="resetBtn" class="nav-icon-button" title="Reset NFC Session">⟳</button>
   </div>
 
   <div id="nfcWrapper">
@@ -99,27 +101,26 @@
     </div>
 
     <div id="status"></div>
-
-    <div class="form-group reset-nav-group">
-      <button id="resetBtn" type="button" class="reset-button">Reset NFC Session</button>
-      <button id="goBackBtn" type="button" class="go-back-button">Return to Tracker</button>
-    </div>
   </div>
 
   <audio id="successSound" src="ding.mp3" preload="auto"></audio>
 
   <script>
-    const returnBtn = document.getElementById("goBackBtn");
-      returnBtn.addEventListener("click", () => {
-          window.close();
-      });
-  </script>
+    document.getElementById("goBackBtn").addEventListener("click", () => {
+      window.close(); // Or redirect to tracker
+    });
 
-  <script>
-  const assetList = document.getElementById('assetList');
-  assetList.addEventListener('focus', function () {
-    this.placeholder = '';
-  }, { once: true }); // Only run the first time it's focused
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      if (typeof resetNfcSession === 'function') {
+        resetNfcSession();
+      } else {
+        console.warn("resetNfcSession function not defined.");
+      }
+    });
+
+    document.getElementById('assetList').addEventListener('focus', function () {
+      this.placeholder = '';
+    }, { once: true });
   </script>
 
   <script src="script/state.js"></script>
