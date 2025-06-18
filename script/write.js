@@ -26,11 +26,12 @@ async function safeWrite(url, scanBtn, mode) {
   try {
     const ndef = new NDEFReader();
     await ndef.write({ records: [{ recordType: "url", data: url }] });
-    await new Promise(r => setTimeout(r, 1500));
+    await new Promise(r => setTimeout(r, 500));
     successSound.play();
     if ("vibrate" in navigator) {
       navigator.vibrate([210, 75, 210]);
     }
+    await new Promise(r => setTimeout(r, 1500));
     window.failCount = 0;
     return true;
   } catch (err) {
