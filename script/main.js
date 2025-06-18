@@ -110,3 +110,33 @@ document.addEventListener("click", () => {
 }, { once: true });
 
 modeSelect.dispatchEvent(new Event("change"));
+
+function getQueryParam(key) {
+  return new URLSearchParams(window.location.search).get(key);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const assetId = getQueryParam("assetId");
+  const tracker = getQueryParam("tracker");
+
+  if (assetId) {
+    document.getElementById("assetIdSingle").value = assetId.toUpperCase();
+  }
+
+  if (tracker) {
+    const select = document.getElementById("companySelectSingle");
+    const match = Array.from(select.options).find(opt =>
+      opt.textContent.trim().toLowerCase().includes(tracker.toLowerCase())
+    );
+    if (match) {
+      match.selected = true;
+      select.dispatchEvent(new Event("change")); // sets base URL
+    }
+  }
+
+  if (assetId || tracker) {
+    // Switch to single mode automatically
+    document.getElementById("modeSelect").value = "single";
+    modeSelect.dispatchEvent(new Event("change"));
+  }
+});
