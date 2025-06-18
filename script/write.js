@@ -29,7 +29,7 @@ async function safeWrite(url, scanBtn, mode) {
     await new Promise(r => setTimeout(r, 500));
     successSound.play();
     if ("vibrate" in navigator) {
-      navigator.vibrate([200, 75, 200]);
+      navigator.vibrate([210, 75, 210]);
     }
     window.failCount = 0;
     return true;
