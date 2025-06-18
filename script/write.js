@@ -28,6 +28,9 @@ async function safeWrite(url, scanBtn, mode) {
     await ndef.write({ records: [{ recordType: "url", data: url }] });
     await new Promise(r => setTimeout(r, 500));
     successSound.play();
+    if ("vibrate" in navigator) {
+      navigator.vibrate([100, 50, 100]);
+    }
     window.failCount = 0;
     return true;
   } catch (err) {
