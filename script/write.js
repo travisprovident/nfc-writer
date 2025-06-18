@@ -26,7 +26,7 @@ async function safeWrite(url, scanBtn, mode) {
   try {
     const ndef = new NDEFReader();
     await ndef.write({ records: [{ recordType: "url", data: url }] });
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 1500));
     successSound.play();
     if ("vibrate" in navigator) {
       navigator.vibrate([210, 75, 210]);
